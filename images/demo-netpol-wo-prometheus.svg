@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="535px" preserveAspectRatio="none" style="width:534px;height:535px;" version="1.1" viewBox="0 0 534 535" width="534px" zoomAndPan="magnify"><defs><filter height="300%" id="f1jbqiwjg7v63h" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--cluster Cluster Network Policies--><polygon fill="#FFFFFF" filter="url(#f1jbqiwjg7v63h)" points="22,123,32,113,512,113,512,513,502,523,22,523,22,123" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="502" x2="511" y1="123" y2="114"/><line style="stroke: #000000; stroke-width: 1.5;" x1="22" x2="502" y1="123" y2="123"/><line style="stroke: #000000; stroke-width: 1.5;" x1="502" x2="502" y1="123" y2="523"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="194" x="166" y="138.9951">Cluster Network Policies</text><!--cluster Namespace 'kube-system'--><polygon fill="#FFFFFF" filter="url(#f1jbqiwjg7v63h)" points="113,161,325,161,332,183.2969,335,183.2969,335,248,113,248,113,161" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="113" x2="332" y1="183.2969" y2="183.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="206" x="117" y="175.9951">Namespace 'kube-system'</text><!--cluster Namespace 'default'--><polygon fill="#FFFFFF" filter="url(#f1jbqiwjg7v63h)" points="46,297,211,297,218,319.2969,221,319.2969,221,384,46,384,46,297" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="46" x2="218" y1="319.2969" y2="319.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="159" x="50" y="311.9951">Namespace 'default'</text><!--cluster Namespace 'production'--><polygon fill="#FFFFFF" filter="url(#f1jbqiwjg7v63h)" points="245,297,441,297,448,319.2969,488,319.2969,488,499,245,499,245,297" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="245" x2="448" y1="319.2969" y2="319.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="190" x="249" y="311.9951">Namespace 'production'</text><!--entity Traefik--><rect fill="#23A3DD" filter="url(#f1jbqiwjg7v63h)" height="36.2969" style="stroke: #16688D; stroke-width: 1.5;" width="66" x="191" y="196"/><rect fill="#23A3DD" height="5" style="stroke: #16688D; stroke-width: 1.5;" width="10" x="186" y="201"/><rect fill="#23A3DD" height="5" style="stroke: #16688D; stroke-width: 1.5;" width="10" x="186" y="222.2969"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="46" x="201" y="218.9951">Traefik</text><!--entity Web Console--><rect fill="#23A3DD" filter="url(#f1jbqiwjg7v63h)" height="36.2969" style="stroke: #16688D; stroke-width: 1.5;" width="112" x="93" y="332"/><rect fill="#23A3DD" height="5" style="stroke: #16688D; stroke-width: 1.5;" width="10" x="88" y="337"/><rect fill="#23A3DD" height="5" style="stroke: #16688D; stroke-width: 1.5;" width="10" x="88" y="358.2969"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="92" x="103" y="354.9951">Web Console</text><!--entity nosqlclient--><rect fill="#23A3DD" filter="url(#f1jbqiwjg7v63h)" height="36.2969" style="stroke: #16688D; stroke-width: 1.5;" width="95" x="261.5" y="332"/><rect fill="#23A3DD" height="5" style="stroke: #16688D; stroke-width: 1.5;" width="10" x="256.5" y="337"/><rect fill="#23A3DD" height="5" style="stroke: #16688D; stroke-width: 1.5;" width="10" x="256.5" y="358.2969"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="75" x="271.5" y="354.9951">nosqlclient</text><!--entity mongodb--><rect fill="#23A3DD" filter="url(#f1jbqiwjg7v63h)" height="36.2969" style="stroke: #16688D; stroke-width: 1.5;" width="87" x="261.5" y="447"/><rect fill="#23A3DD" height="5" style="stroke: #16688D; stroke-width: 1.5;" width="10" x="256.5" y="452"/><rect fill="#23A3DD" height="5" style="stroke: #16688D; stroke-width: 1.5;" width="10" x="256.5" y="473.2969"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="67" x="271.5" y="469.9951">mongodb</text><!--entity LB--><ellipse cx="224" cy="37" fill="#23A3DD" filter="url(#f1jbqiwjg7v63h)" rx="8" ry="8" style="stroke: #16688D; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="37" x="205.5" y="66.9951">HTTP</text><!--link LB to Traefik--><path d="M224,46.441 C224,72.447 224,151.941 224,190.946 " fill="none" id="LB-Traefik" style="stroke: #23A3DD; stroke-width: 1.0;"/><polygon fill="#23A3DD" points="224,195.947,228,186.947,224,190.947,220,186.947,224,195.947" style="stroke: #23A3DD; stroke-width: 1.0;"/><!--link Traefik to Web Console--><path d="M192.131,232.068 C180.119,240.141 167.549,250.907 160,264 C149.02,283.042 147.049,308.41 147.346,326.463 " fill="none" id="Traefik-Web Console" style="stroke: #23A3DD; stroke-width: 1.0;"/><polygon fill="#23A3DD" points="147.504,331.816,151.2374,322.7022,147.3569,326.8182,143.2409,322.9376,147.504,331.816" style="stroke: #23A3DD; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="99" x="161" y="277.0669">web-console:80</text><!--link Traefik to nosqlclient--><path d="M240.176,232.412 C248.156,241.46 257.625,252.919 265,264 C278.548,284.358 291.06,309.399 299.25,327.012 " fill="none" id="Traefik-nosqlclient" style="stroke: #23A3DD; stroke-width: 1.0;"/><polygon fill="#23A3DD" points="301.443,331.773,301.3116,321.925,299.3515,327.2314,294.0451,325.2714,301.443,331.773" style="stroke: #23A3DD; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="104" x="276" y="277.0669">nosqlclient:3000</text><!--link nosqlclient to mongodb--><path d="M308.392,368.162 C307.699,387.742 306.563,419.834 305.799,441.4267 " fill="none" id="nosqlclient-mongodb" style="stroke: #23A3DD; stroke-width: 1.0;"/><polygon fill="#23A3DD" points="305.613,446.6762,309.9291,437.8234,305.79,441.6793,301.9341,437.5402,305.613,446.6762" style="stroke: #23A3DD; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="174" x="308" y="413.0669">mongodb:/mongodb:27017</text><!--
+@startuml
+skinparam interface {
+  BackgroundColor #23a3dd
+  BorderColor #16688d
+}
+
+skinparam arrow {
+  Color #23a3dd
+}
+
+skinparam component {
+  BackgroundColor #23a3dd
+  BorderColor #16688d
+  FontColor #FFFFFF
+}
+
+
+interface "HTTP" as LB
+
+node "Cluster Network Policies" {
+
+  package "Namespace 'kube-system'" {
+    [Traefik] as "Traefik"
+    [LB] - -> [Traefik]
+  }
+
+  package "Namespace 'default'" {
+    [Web Console]
+    [Traefik] - -> [Web Console] : web-console:80
+  }
+
+  package "Namespace 'production'" {
+    [nosqlclient]
+    [Traefik] - -> [nosqlclient] : nosqlclient:3000
+    [nosqlclient] - -> [mongodb] : mongodb:/mongodb:27017
+  }
+}
+@enduml
+
+PlantUML version 1.2019.00(Sun Jan 13 15:46:42 UTC 2019)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Java Version: 1.7.0_25-b15
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>
