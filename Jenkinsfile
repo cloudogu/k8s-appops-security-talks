@@ -1,5 +1,5 @@
 #!groovy
-@Library('github.com/cloudogu/ces-build-lib@6344271')
+@Library('github.com/cloudogu/ces-build-lib@9857cf1e')
 import com.cloudogu.ces.cesbuildlib.*
 
 node('docker') {
@@ -19,6 +19,8 @@ node('docker') {
 
     Maven mvn = new MavenInDocker(this, "3.5.0-jdk-8")
     Git git = new Git(this, 'cesmarvin')
+
+    String conferenceName = '2019-09-26-heise-devsec'
 
     titleSlidePath   = 'docs/slides/00-title.md'
 
@@ -55,7 +57,7 @@ node('docker') {
         }
 
         stage('Deploy GH Pages') {
-            git.pushGitHubPagesBranch('dist', versionName)
+            git.pushGitHubPagesBranch('dist', versionName, conferenceName)
         }
 
         stage('Deploy Nexus') {
