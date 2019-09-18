@@ -1,7 +1,7 @@
 #!groovy
 
 //Keep this version in sync with the one used in Maven.pom-->
-@Library('github.com/cloudogu/ces-build-lib@d57af485')
+@Library('github.com/cloudogu/ces-build-lib@9857cf1')
 import com.cloudogu.ces.cesbuildlib.*
 
 node('docker') {
@@ -36,7 +36,7 @@ node('docker') {
         }
 
         String versionName = createVersion(mvn)
-        String pdfPath = "${new Date().format('yyyy-MM-dd')}-${conferenceName}.pdf"
+        String pdfPath = createPdfName()
 
         stage('Build') {
             docker.image(nodeImageVersion)
@@ -63,12 +63,11 @@ node('docker') {
             printPdf pdfPath
             archiveArtifacts pdfPath
             // Deploy PDF next to the app, use a constant name for the PDF for easier URLs.
-            sh "mv '${pdfPath}' 'dist/${conferenceName}.pdf'"
+            sh "mv '${pdfPath}' 'dist/${createPdfName(false)}'"
         }
 
         stage('Deploy GH Pages') {
-            sh "mv ${pdfPath} dist"
-            git.pushGitHubPagesBranch('dist', versionName)
+            git.pushGitHubPagesBranch('dist', versionName, conferenceName)
         }
 
         stage('Deploy Nexus') {
@@ -93,9 +92,14 @@ node('docker') {
 
 String nodeImageVersion
 
-String createPdfName() {
+String createPdfName(boolean includeDate = true) {
     String title = sh (returnStdout: true, script: "grep -r '<title>' index.html | sed 's/.*<title>\\(.*\\)<.*/\\1/'").trim()
-    return "${new Date().format('yyyy-MM-dd')}-${title}.pdf"
+    String pdfName = '';
+    if (includeDate) {
+        pdfName = "${new Date().format('yyyy-MM-dd')}-"
+    }
+    pdfName += "${title}.pdf"
+    return pdfName
 }
 
 String createVersion(Maven mvn) {
@@ -185,6 +189,7 @@ String filterFile(String filePath, String expression, String replace) {
 
 boolean waitForWebserver(String url) {
     echo "Waiting for website to become ready at ${url}"
-    int ret = sh (returnStatus: true, script: "wget --retry-connrefused --tries=30 -q --wait=1 ${url}")
+    // Output to stdout and discard (O- >/dev/null) because we don't want the file we only want to know if it's available
+    int ret = sh (returnStatus: true, script: "wget O- --retry-connrefused --tries=30 -q --wait=1 ${url} &> /dev/null")
     return ret == 0
 }
