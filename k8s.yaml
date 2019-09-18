@@ -1,19 +1,10 @@
-kind: Secret
-apiVersion: v1
-data:
-  auth: dHJhaW5pbmc6JGFwcjEka2M1YTh3VGUkRC5sRzRudnZQSTRpRVNkZlNTTmZFLwo=
-metadata:
-  name: k8s-sec-3-things
-  namespace: bc-production
----
 kind: Service 
 apiVersion: v1
 metadata:
-  name: k8s-sec-3-things-svc
-  namespace: bc-production
+  name: cd-slides
 spec:
   selector:
-    app: k8s-sec-3-things
+    app: cd-slides
   ports:
     - port: 80
       targetPort: 8080
@@ -22,24 +13,23 @@ spec:
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: k8s-sec-3-things
-  namespace: bc-production
+  name: cd-slides
 spec:
   selector:
     matchLabels:
-      app: k8s-sec-3-things
+      app: cd-slides
   template:
     metadata:
       labels:
-        app: k8s-sec-3-things
+        app: cd-slides
       annotations:
         kubernetes.io/change-cause: $IMAGE_NAME
     spec:
       containers:
-        - name: k8s-sec-3-things
+        - name: cd-slides
           image: $IMAGE_NAME
           ports:
-          - containerPort: 8080
+            - containerPort: 8080
           resources:
             limits:
               cpu: 100m
@@ -47,31 +37,19 @@ spec:
             requests:
               cpu: 100m
               memory: 64Mi
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 8080
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8080
-            initialDelaySeconds: 15
 ---
 kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
-  name: k8s-sec-3-things
-  namespace: bc-production
+  name: cd-slides
   annotations:
     kubernetes.io/ingress.class: traefik
-    ingress.kubernetes.io/auth-type: basic
-    ingress.kubernetes.io/auth-secret: k8s-sec-3-things
 spec:
   rules:
-  - host: k8s-sec-3-things.cloudogu.com
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: k8s-sec-3-things-svc
-          servicePort: 80
+    - host: continuous-delivery-slides.cloudogu.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: cd-slides
+              servicePort: 80

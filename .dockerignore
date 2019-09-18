@@ -1,6 +1,6 @@
 # Ignore all
 **
-# Whiteliste
+# Whitelist
 !index.html
 !css/**
 !docs/**
@@ -8,5 +8,5 @@
 !js/**
 !lib/**
 !plugin/**
-!demo/**
 !favicon.ico
+!exercises

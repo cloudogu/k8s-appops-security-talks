@@ -10,23 +10,15 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
 /*********************************************
  * GLOBAL STYLES
  *********************************************/
-/** From League Plugin */
 body {
-  background: #1c1e20;
-  background: -moz-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
-  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #555a5f), color-stop(100%, #1c1e20));
-  background: -webkit-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
-  background: -o-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
-  background: -ms-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
-  background: radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
-  background-color: #2b2b2b;
-}
-
+  background-image: url("images/logo.png");
+  background-repeat: no-repeat;
+  background-position: bottom 12px left 12px; }
 .reveal {
   font-family: "Exo", "Droid Sans", sans-serif;
   font-size: 20px;
   font-weight: normal;
-  color: white; }
+  color: #777; }
 
 ::selection {
   color: #fff;
@@ -41,7 +33,7 @@ body {
 .reveal .slides > section,
 .reveal .slides > section > section {
   line-height: 1.5;
-  font-weight: inherit; 
+  font-weight: inherit;
   text-align: left;}
 /*********************************************
  * HEADERS
@@ -53,7 +45,7 @@ body {
 .reveal h5,
 .reveal h6 {
   margin: 50px 80px 20px 0;
-  color: white;
+  color: #5b5a5a;
   font-family: "Exo", "Droid Sans", sans-serif;
   font-weight: 600;
   line-height: 1.8;
@@ -105,18 +97,18 @@ body {
   margin: 0 0 0 1em; }
 
 .reveal ol { list-style: none; counter-reset: li }
-  li::before {content: counter(li); color: #23A3DD;
+li::before {content: counter(li); color: #23A3DD;
   display: inline-block; width: 1em;
   margin-left: -1em}
-  li {counter-increment: li}
+li {counter-increment: li}
 .reveal ol li::before {content: counter(li); color: #23A3DD;
-    display: inline-block; width: 1em; margin-left: -1.5em;
-    margin-right: 0.5em; text-align: right; direction: rtl}
+  display: inline-block; width: 1em; margin-left: -1.5em;
+  margin-right: 0.5em; text-align: right; direction: rtl}
 .reveal ul {
   list-style-type: none; }
-  li::before {content: "•"; color:#23A3DD;
-    display: inline-block; width: 1em;
-    margin-left: -1em}
+li::before {content: "•"; color:#23A3DD;
+  display: inline-block; width: 1em;
+  margin-left: -1em}
 .reveal ul ul {
   list-style-type: none; }
 
@@ -130,10 +122,10 @@ body {
   display: block;
   margin-left: 40px; }
 
-  .reveal ol ul li::before {content: "•"; color:#23A3DD;
-    display: inline-block; width: 1em;
-    margin-left: -1em}
- 
+.reveal ol ul li::before {content: "•"; color:#23A3DD;
+  display: inline-block; width: 1em;
+  margin-left: -1em}
+
 .reveal dt {
   font-weight: bold; }
 
@@ -141,11 +133,11 @@ body {
   margin-left: 40px; }
 
 .reveal blockquote {
-    background: rgba(255, 255, 255, 0.05);
-    border-left: 5px solid #1B7DAA;
-    margin: 1.5em 10px;
-    padding: 0.5em 10px;
-  }
+  background: #f9f9f9;
+  border-left: 5px solid #1B7DAA;
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+}
 
 
 .reveal blockquote p:first-child,
@@ -250,6 +242,13 @@ body {
   border: 0;
   box-shadow: none; }
 
+.reveal section img.emoji {
+  height: 1em;
+  width: 1em;
+  margin: 0 .05em 0 .1em;
+  vertical-align: -0.1em;
+}
+
 .reveal a img {
   -webkit-transition: all .15s linear;
   -moz-transition: all .15s linear;
@@ -294,21 +293,6 @@ body {
   margin-right: auto !important
 }
 
-html.cloudogu-background body {
-  background-image: url("images/logo.png") !important;
-  background-repeat: no-repeat !important;
-  background-position: bottom 12px left 12px !important;
-  background-color: white !important;
-  background: white;
-}
-
-html.cloudogu-background-image body {
-  background-image: url("images/logo.png") !important;
-  background-repeat: no-repeat !important;
-  background-position: bottom 12px left 12px !important;
-  background-size: 120px 78px;
-}
-
 .title {
   font-weight: bold;
   text-transform: uppercase;
@@ -321,4 +305,20 @@ html.cloudogu-background-image body {
 
 .title-version {
   font-size: small !important;
+}
+
+.text-smaller {
+  font-size: 18px !important;
+}
+
+/** From League Plugin */
+html.black-gradient body {
+  background: #1c1e20;
+  background: -moz-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #555a5f), color-stop(100%, #1c1e20));
+  background: -webkit-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
+  background: -o-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
+  background: -ms-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
+  background: radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
+  background-color: #2b2b2b;
 }
