@@ -1,5 +1,7 @@
 #!groovy
-@Library('github.com/cloudogu/ces-build-lib@9857cf1e')
+
+//Keep this version in sync with the one used in Maven.pom-->
+@Library('github.com/cloudogu/ces-build-lib@d57af485')
 import com.cloudogu.ces.cesbuildlib.*
 
 node('docker') {
@@ -17,12 +19,14 @@ node('docker') {
             ])
     ])
 
-    Maven mvn = new MavenInDocker(this, "3.5.0-jdk-8")
-    Git git = new Git(this, 'cesmarvin')
-
     String conferenceName = '2019-09-26-heise-devsec'
 
-    titleSlidePath   = 'docs/slides/00-title.md'
+    def introSlidePath = 'docs/slides/00-title.md'
+    nodeImageVersion = 'node:11.14.0-alpine'
+
+    Git git = new Git(this, 'cesmarvin')
+    Docker docker = new Docker(this)
+    Maven mvn = new MavenInDocker(this, "3.5.0-jdk-8")
 
     catchError {
 
@@ -31,66 +35,55 @@ node('docker') {
             git.clean('')
         }
 
-        String versionName = createVersion()
-
+        String versionName = createVersion(mvn)
+        String pdfPath = "${new Date().format('yyyy-MM-dd')}-${conferenceName}.pdf"
 
         stage('Build') {
-            new Docker(this).image('node:8.11.3-jessie').mountJenkinsUser()
-              // override entrypoint, because of https://issues.jenkins-ci.org/browse/JENKINS-41316
-              .inside('--entrypoint=""') {
-                echo 'Building presentation'
-                sh 'yarn install'
-                sh 'node_modules/grunt/bin/grunt package'
-            }
-            archive 'reveal-js-presentation.zip'
+            docker.image(nodeImageVersion)
+            // Avoid  EACCES: permission denied, mkdir '/.npm'
+                    .mountJenkinsUser()
+                    .inside {
+                        echo 'Building presentation'
+                        sh 'npm install'
+                        // Don't run tests, because we're not developing reveal here
+                        sh 'node_modules/grunt/bin/grunt package --skipTests'
+                    }
         }
 
         stage('package') {
-            // This could probably be done easier...
-            docker.image('garthk/unzip')
-               // override entrypoint, because of https://issues.jenkins-ci.org/browse/JENKINS-41316
-              .inside('--entrypoint=""') {
+            // "unzip" is not installed by default on many systems, so use it within a container
+            docker.image('garthk/unzip').inside {
                 sh 'unzip reveal-js-presentation.zip -d dist'
             }
 
-            writeVersionNameToIntroSlide(versionName)
+            writeVersionNameToIntroSlide(versionName, introSlidePath)
+        }
+
+        stage('print pdf') {
+            printPdf pdfPath
+            archiveArtifacts pdfPath
+            // Deploy PDF next to the app, use a constant name for the PDF for easier URLs.
+            sh "mv '${pdfPath}' 'dist/${conferenceName}.pdf'"
         }
 
         stage('Deploy GH Pages') {
-            git.pushGitHubPagesBranch('dist', versionName, conferenceName)
+            sh "mv ${pdfPath} dist"
+            git.pushGitHubPagesBranch('dist', versionName)
         }
 
         stage('Deploy Nexus') {
             if (params.deployToNexus) {
-                String usernameProperty = "site_username"
-                String passwordProperty = "site_password"
 
-                String settingsXmlPath = mvn.writeSettingsXmlWithServer(
-                        // From pom.xml
-                        'ecosystem.cloudogu.com',
-                        "\${env.${usernameProperty}}",
-                        "\${env.${passwordProperty}}")
+                mvn.useDeploymentRepository([
+                        // Must match the one in pom.xml!
+                        id: 'ecosystem.cloudogu.com',
+                        credentialsId: 'ces-nexus'
+                ])
 
-                withCredentials([usernamePassword(credentialsId: 'jenkins',
-                        passwordVariable: passwordProperty, usernameVariable: usernameProperty)]) {
-
-                    // Deploys to nexus/service/local/repositories/Cloudogu-Docs/content/com.cloudogu.slides/BRANCH_NAME/latest/index.html#/
-                    mvn "site:deploy -s \"${settingsXmlPath}\"" +
-                            // Use a different artifact for each branch
-                            " -Dartifact=${env.BRANCH_NAME} " +
-                            // Keep only latest version in Nexus --> Constant URL
-                            " -Drevision=latest"
-                }
+                // Artifact is used in pom.xml
+                mvn.deploySiteToNexus("-Dartifact=${env.BRANCH_NAME} ")
             } else {
                 echo "Skipping deployment to Nexus because parameter is set to false."
-            }
-        }
-
-        stage('Deploy Kubernetes') {
-            if (params.deployToK8s) {
-                deployToKubernetes(versionName)
-            } else {
-                echo "Skipping deployment to Kubernetes because parameter is set to false."
             }
         }
     }
@@ -98,49 +91,71 @@ node('docker') {
     mailIfStatusChanged(git.commitAuthorEmail)
 }
 
-String createVersion() {
+String nodeImageVersion
+
+String createPdfName() {
+    String title = sh (returnStdout: true, script: "grep -r '<title>' index.html | sed 's/.*<title>\\(.*\\)<.*/\\1/'").trim()
+    return "${new Date().format('yyyy-MM-dd')}-${title}.pdf"
+}
+
+String createVersion(Maven mvn) {
     // E.g. "201708140933-1674930"
     String versionName = "${new Date().format('yyyyMMddHHmm')}-${new Git(this).commitHashShort}"
 
-    currentBuild.description = versionName
-    echo "Building version $versionName on branch ${env.BRANCH_NAME}"
-    
+    if (env.BRANCH_NAME == "master") {
+        mvn.additionalArgs = "-Drevision=${versionName} "
+        currentBuild.description = versionName
+        echo "Building version $versionName on branch ${env.BRANCH_NAME}"
+    } else {
+        versionName += '-SNAPSHOT'
+    }
     return versionName
 }
 
-def titleSlidePath = ''
-
-private void writeVersionNameToIntroSlide(String versionName) {
-    def distIntro = "dist/${titleSlidePath}"
+void writeVersionNameToIntroSlide(String versionName, String introSlidePath) {
+    def distIntro = "dist/${introSlidePath}"
     String filteredIntro = filterFile(distIntro, "<!--VERSION-->", "Version: $versionName")
     sh "cp $filteredIntro $distIntro"
-    sh "mv $filteredIntro $titleSlidePath"
+    sh "mv $filteredIntro $introSlidePath"
 }
 
-/**
- * Filters a {@code filePath}, replacing an {@code expression} by {@code replace} writing to new file, whose path is returned.
- *
- * @return path to filtered file
- */
-String filterFile(String filePath, String expression, String replace) {
-    String filteredFilePath = filePath + ".filtered"
-    // Fail command (and build) file not present
-    sh "test -e ${filePath} || (echo Title slide ${filePath} not found && return 1)"
-    sh "cat ${filePath} | sed 's/${expression}/${replace}/g' > ${filteredFilePath}"
-    return filteredFilePath
-}
+void printPdf(String pdfPath) {
+    Docker docker = new Docker(this)
 
+    docker.image(nodeImageVersion).withRun(
+            "-v ${WORKSPACE}:/workspace -w /workspace",
+            'npm run start') { revealContainer ->
+
+        def revealIp = docker.findIp(revealContainer)
+        if (!revealIp || !waitForWebserver("http://${revealIp}:8000")) {
+            echo "Warning: Couldn't deploy reveal presentation for PDF printing. "
+            echo "Docker log:"
+            echo new Sh(this).returnStdOut("docker logs ${revealContainer.id}")
+            error "PDF creation failed"
+        }
+
+        docker.image('yukinying/chrome-headless-browser:77.0.3833.0')
+        // Chromium writes to $HOME/local, so we need an entry in /etc/pwd for the current user
+                .mountJenkinsUser()
+        // Try to avoid OOM for larger presentations by setting larger shared memory
+                .inside("--shm-size=2G") {
+
+                    sh "/usr/bin/google-chrome-unstable --headless --no-sandbox --disable-gpu --print-to-pdf='${pdfPath}' " +
+                            "http://${revealIp}:8000/?print-pdf"
+                }
+    }
+}
 
 void deployToKubernetes(String versionName) {
 
-    String dockerRegistry = 'eu.gcr.io/cloudogu-backend'
-    String imageName = "$dockerRegistry/k8s-sec-3-things:${versionName}"
-
-    docker.withRegistry("https://$dockerRegistry", 'gcloud-docker') {
-        docker.build(imageName, '.').push()
+    String imageName = "cloudogu/continuous-delivery-slides:${versionName}"
+    def image = docker.build imageName
+    docker.withRegistry('', 'hub.docker.com-cesmarvin') {
+        image.push()
+        image.push('latest')
     }
 
-    withCredentials([file(credentialsId: 'kubeconfig-bc-production', variable: 'kubeconfig')]) {
+    withCredentials([file(credentialsId: 'kubeconfig-oss-deployer', variable: 'kubeconfig')]) {
 
         withEnv(["IMAGE_NAME=$imageName"]) {
 
@@ -153,4 +168,23 @@ void deployToKubernetes(String versionName) {
             )
         }
     }
+}
+
+/**
+ * Filters a {@code filePath}, replacing an {@code expression} by {@code replace} writing to new file, whose path is returned.
+ *
+ * @return path to filtered file
+ */
+String filterFile(String filePath, String expression, String replace) {
+    String filteredFilePath = filePath + ".filtered"
+    // Fail command (and build) if file not present
+    sh "test -e ${filePath} || (echo Title slide ${filePath} not found && return 1)"
+    sh "cat ${filePath} | sed 's/${expression}/${replace}/g' > ${filteredFilePath}"
+    return filteredFilePath
+}
+
+boolean waitForWebserver(String url) {
+    echo "Waiting for website to become ready at ${url}"
+    int ret = sh (returnStatus: true, script: "wget --retry-connrefused --tries=30 -q --wait=1 ${url}")
+    return ret == 0
 }
