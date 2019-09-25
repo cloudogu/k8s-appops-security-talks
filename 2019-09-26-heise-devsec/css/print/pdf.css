@@ -58,6 +58,11 @@ ul, ol, div, p {
 	height: auto !important;
 	overflow: hidden !important;
 }
+
+.reveal .footer {
+	display: none
+}
+
 .reveal .slides {
 	position: static;
 	width: 100% !important;
