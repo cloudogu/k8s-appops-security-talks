@@ -19,7 +19,8 @@ node('docker') {
             ])
     ])
 
-    String conferenceName = '2019-09-26-heise-devsec'
+    String conferenceName = '2019-12-12-it-tage'
+    pdfBaseName = '3-things-every-developer-should-know-about-k8s-security'
 
     def introSlidePath = 'docs/slides/00-title.md'
     nodeImageVersion = 'node:11.14.0-alpine'
@@ -91,9 +92,13 @@ node('docker') {
 }
 
 String nodeImageVersion
+String pdfBaseName
 
 String createPdfName(boolean includeDate = true) {
-    String title = sh (returnStdout: true, script: "grep -r '<title>' index.html | sed 's/.*<title>\\(.*\\)<.*/\\1/'").trim()
+    String title = pdfBaseName
+    if (!title) {
+        title = sh (returnStdout: true, script: "grep -r '<title>' index.html | sed 's/.*<title>\\(.*\\)<.*/\\1/'").trim()
+    }
     String pdfName = '';
     if (includeDate) {
         pdfName = "${new Date().format('yyyy-MM-dd')}-"
