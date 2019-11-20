@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="253px" preserveAspectRatio="none" style="width:529px;height:253px;" version="1.1" viewBox="0 0 529 253" width="529px" zoomAndPan="magnify"><defs><filter height="300%" id="f171qvwtdvuz2" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--cluster Cluster legacy authz--><polygon fill="#FFFFFF" filter="url(#f171qvwtdvuz2)" points="22,92,32,82,260,82,260,231,250,241,22,241,22,92" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="250" x2="259" y1="92" y2="83"/><line style="stroke: #000000; stroke-width: 1.5;" x1="22" x2="250" y1="92" y2="92"/><line style="stroke: #000000; stroke-width: 1.5;" x1="250" x2="250" y1="92" y2="241"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="162" x="56" y="107.9951">Cluster legacy authz</text><!--cluster default-legacy--><polygon fill="#FFFFFF" filter="url(#f171qvwtdvuz2)" points="61,130,226,130,233,152.2969,236,152.2969,236,217,61,217,61,130" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="61" x2="233" y1="152.2969" y2="152.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="159" x="65" y="144.9951">Namespace 'default'</text><!--cluster Cluster RBAC--><polygon fill="#FFFFFF" filter="url(#f171qvwtdvuz2)" points="284,92,294,82,507,82,507,231,497,241,284,241,284,92" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="497" x2="506" y1="92" y2="83"/><line style="stroke: #000000; stroke-width: 1.5;" x1="284" x2="497" y1="92" y2="92"/><line style="stroke: #000000; stroke-width: 1.5;" x1="497" x2="497" y1="92" y2="241"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="104" x="339.5" y="107.9951">Cluster RBAC</text><!--cluster default-rbac--><polygon fill="#FFFFFF" filter="url(#f171qvwtdvuz2)" points="308,130,473,130,480,152.2969,483,152.2969,483,217,308,217,308,130" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="308" x2="480" y1="152.2969" y2="152.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="159" x="312" y="144.9951">Namespace 'default'</text><!--entity Web Console legacy--><rect fill="#23A3DD" filter="url(#f171qvwtdvuz2)" height="36.2969" style="stroke: #16688D; stroke-width: 1.5;" width="112" x="108" y="165"/><rect fill="#23A3DD" height="5" style="stroke: #16688D; stroke-width: 1.5;" width="10" x="103" y="170"/><rect fill="#23A3DD" height="5" style="stroke: #16688D; stroke-width: 1.5;" width="10" x="103" y="191.2969"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="92" x="118" y="187.9951">Web Console</text><!--entity Web Console RBAC--><rect fill="#23A3DD" filter="url(#f171qvwtdvuz2)" height="36.2969" style="stroke: #16688D; stroke-width: 1.5;" width="112" x="324" y="165"/><rect fill="#23A3DD" height="5" style="stroke: #16688D; stroke-width: 1.5;" width="10" x="319" y="170"/><rect fill="#23A3DD" height="5" style="stroke: #16688D; stroke-width: 1.5;" width="10" x="319" y="191.2969"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="92" x="334" y="187.9951">Web Console</text><!--entity LB--><ellipse cx="272" cy="37" fill="#23A3DD" filter="url(#f171qvwtdvuz2)" rx="8" ry="8" style="stroke: #16688D; stroke-width: 2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="46" x="249" y="66.9951">HTTPS</text><!--link LB to Web Console legacy--><path d="M265.884,46.155 C249.571,67.906 204.609,127.855 180.228,160.363 " fill="none" id="LB-Web Console legacy" style="stroke: #23A3DD; stroke-width: 1.0;"/><polygon fill="#23A3DD" points="177.073,164.5698,185.673,159.7698,180.073,160.5698,179.273,154.9698,177.073,164.5698" style="stroke: #23A3DD; stroke-width: 1.0;"/><!--link LB to Web Console RBAC--><path d="M278.116,46.155 C294.429,67.906 339.391,127.855 363.772,160.363 " fill="none" id="LB-Web Console RBAC" style="stroke: #23A3DD; stroke-width: 1.0;"/><polygon fill="#23A3DD" points="366.927,164.5698,364.727,154.9698,363.927,160.5698,358.327,159.7698,366.927,164.5698" style="stroke: #23A3DD; stroke-width: 1.0;"/><!--
+@startuml
+skinparam interface {
+  BackgroundColor #23a3dd
+  BorderColor #16688d
+}
+
+skinparam arrow {
+  Color #23a3dd
+}
+
+skinparam component {
+  BackgroundColor #23a3dd
+  BorderColor #16688d
+  FontColor #FFFFFF
+}
+
+
+interface "HTTPS" as LB
+
+node "Cluster legacy authz" {
+
+  package "Namespace 'default'" as "default-legacy" {
+    [Web Console legacy] as "Web Console"
+    [LB] - -> [Web Console legacy]
+  }
+
+}
+
+node "Cluster RBAC" {
+
+  package "Namespace 'default'" as "default-rbac" {
+    [Web Console RBAC] as "Web Console"
+    [LB] - -> [Web Console RBAC]
+  }
+
+}
+@enduml
+
+PlantUML version 1.2019.00(Sun Jan 13 15:46:42 UTC 2019)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Java Version: 1.7.0_25-b15
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>
