@@ -1,6 +1,5 @@
-<p>🌐 https://haveibeenpwned.com/PwnedWebsites  
-  <a href='https://twitter.com/haveibeenpwned' class="social" target="_blank"><i class='fab fa-twitter'></i>@haveibeenpwned</a>
-</p>
+🌐 https://haveibeenpwned.com/PwnedWebsites
+<a href='https://twitter.com/haveibeenpwned' class="social" target="_blank"><i class='fab fa-twitter'></i>@haveibeenpwned</a>
 <p class="fragment">
     <img data-src="images/PwnedLogos/000webhost.png" width="23px" alt="000webhost logo">
     <img data-src="images/PwnedLogos/126.png" width="23px" alt="126 logo">

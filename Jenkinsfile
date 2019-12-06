@@ -24,6 +24,7 @@ node('docker') {
 
     def introSlidePath = 'docs/slides/00-title.md'
     nodeImageVersion = 'node:11.14.0-alpine'
+    headlessChromeVersion = 'yukinying/chrome-headless-browser:80.0.3970.5'
 
     Git git = new Git(this, 'cesmarvin')
     Docker docker = new Docker(this)
@@ -93,6 +94,7 @@ node('docker') {
 
 String nodeImageVersion
 String pdfBaseName
+String headlessChromeVersion
 
 String createPdfName(boolean includeDate = true) {
     String title = pdfBaseName
@@ -143,7 +145,7 @@ void printPdf(String pdfPath) {
             error "PDF creation failed"
         }
 
-        docker.image('yukinying/chrome-headless-browser:77.0.3833.0')
+        docker.image(headlessChromeVersion)
         // Chromium writes to $HOME/local, so we need an entry in /etc/pwd for the current user
                 .mountJenkinsUser()
         // Try to avoid OOM for larger presentations by setting larger shared memory

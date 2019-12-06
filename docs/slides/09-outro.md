@@ -33,12 +33,13 @@ See also 🌐  https://cloudogu.com/blog
     <i class='fab fa-twitter'></i>
     @jschnatterer
 </a>
-
+<br/>
 <a href='https://twitter.com/cloudogu' class="social" target="_blank">
     <i class='fab fa-twitter'></i>
     @cloudogu
 </a>
 
+<br/>
 <br/>
 Demo Source: 
 <a href='https://github.com/cloudogu/k8s-security-demos' class="social" target="_blank">

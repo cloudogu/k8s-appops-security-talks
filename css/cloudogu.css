@@ -1,11 +1,11 @@
 ﻿/**
- * White theme for reveal.js. This is the opposite of the 'black' theme.
+ * Black theme for reveal.js. This is the opposite of the 'white' theme.
  *
  * By Hakim El Hattab, http://hakim.se
  */
 @import url(../../lib/font/source-sans-pro/source-sans-pro.css);
-section.has-dark-background, section.has-dark-background h1, section.has-dark-background h2, section.has-dark-background h3, section.has-dark-background h4, section.has-dark-background h5, section.has-dark-background h6 {
-  color: #fff; }
+section.has-light-background, section.has-light-background h1, section.has-light-background h2, section.has-light-background h3, section.has-light-background h4, section.has-light-background h5, section.has-light-background h6 {
+  color: #222; }
 
 /*********************************************
  * GLOBAL STYLES
@@ -15,8 +15,8 @@ body {
   background-repeat: no-repeat;
   background-position: bottom 12px left 12px; }
 .reveal {
-  font-family: "Exo", "Droid Sans", sans-serif;
-  font-size: 20px;
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  font-size: 42px;
   font-weight: normal;
   color: #777; }
 
@@ -33,7 +33,7 @@ body {
 .reveal .slides > section,
 .reveal .slides > section > section {
   line-height: 1.5;
-  font-weight: inherit;
+  font-weight: inherit; 
   text-align: left;}
 /*********************************************
  * HEADERS
@@ -97,18 +97,18 @@ body {
   margin: 0 0 0 1em; }
 
 .reveal ol { list-style: none; counter-reset: li }
-li::before {content: counter(li); color: #23A3DD;
+  li::before {content: counter(li); color: #23A3DD;
   display: inline-block; width: 1em;
   margin-left: -1em}
-li {counter-increment: li}
+  li {counter-increment: li}
 .reveal ol li::before {content: counter(li); color: #23A3DD;
-  display: inline-block; width: 1em; margin-left: -1.5em;
-  margin-right: 0.5em; text-align: right; direction: rtl}
+    display: inline-block; width: 1em; margin-left: -1.5em;
+    margin-right: 0.5em; text-align: right; direction: rtl}
 .reveal ul {
   list-style-type: none; }
-li::before {content: "•"; color:#23A3DD;
-  display: inline-block; width: 1em;
-  margin-left: -1em}
+  li::before {content: "•"; color:#23A3DD;
+    display: inline-block; width: 1em;
+    margin-left: -1em}
 .reveal ul ul {
   list-style-type: none; }
 
@@ -122,10 +122,10 @@ li::before {content: "•"; color:#23A3DD;
   display: block;
   margin-left: 40px; }
 
-.reveal ol ul li::before {content: "•"; color:#23A3DD;
-  display: inline-block; width: 1em;
-  margin-left: -1em}
-
+  .reveal ol ul li::before {content: "•"; color:#23A3DD;
+    display: inline-block; width: 1em;
+    margin-left: -1em}
+ 
 .reveal dt {
   font-weight: bold; }
 
@@ -133,11 +133,11 @@ li::before {content: "•"; color:#23A3DD;
   margin-left: 40px; }
 
 .reveal blockquote {
-  background: #f9f9f9;
-  border-left: 5px solid #1B7DAA;
-  margin: 1.5em 10px;
-  padding: 0.5em 10px;
-}
+    background: #f9f9f9;
+    border-left: 5px solid #1B7DAA;
+    margin: 1.5em 10px;
+    padding: 0.5em 10px;
+  }
 
 
 .reveal blockquote p:first-child,
@@ -243,10 +243,10 @@ li::before {content: "•"; color:#23A3DD;
   box-shadow: none; }
 
 .reveal section img.emoji {
-  height: 1em;
-  width: 1em;
-  margin: 0 .05em 0 .1em;
-  vertical-align: -0.1em;
+   height: 1em;
+   width: 1em;
+   margin: 0 .05em 0 .1em;
+   vertical-align: -0.1em;
 }
 
 .reveal a img {
