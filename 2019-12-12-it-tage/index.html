@@ -7,7 +7,7 @@
 		<title>3 things every developer should know about K8s security</title>
 
 		<link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/reveal.min.css">
 		<link rel="stylesheet" href="css/cloudogu-black.css">
 
 		<!-- Theme used for syntax highlighting of code -->
@@ -24,7 +24,7 @@
 	</head>
 	<body>
 		<div class="reveal">
-			<div class='footer'>
+			<div class="footer text-smaller">
 				<p>
 				<a href='https://twitter.com/hashtag/ittage' class="social" target="_blank">
 					<i class='fab fa-twitter'></i>
@@ -41,8 +41,9 @@
 			<div class="slides">
 				<section data-markdown="docs/slides/00-title.md" 							data-separator-vertical="^\r?\n\r?\n\r?\n"></section>
 				<section data-markdown="docs/slides/01-pawned.md" 							data-separator-vertical="^\r?\n\r?\n\r?\n"></section>
-				<section data-markdown="docs/slides/02-ivory-tower.md" 						data-separator-vertical="^\r?\n\r?\n\r?\n"></section>
-				<section id="tagcloud" tagcloud large data-notes="">
+				<section data-markdown="docs/slides/01b-pawned-logos.md" 							data-separator-vertical="^\r?\n\r?\n\r?\n"></section>
+				<section data-markdown="docs/slides/02-k8s.md" 						data-separator-vertical="^\r?\n\r?\n\r?\n"></section>
+				<section id="tagcloud" tagcloud bw data-notes="">
 					securityContext
 					runAsNonRoot
 					runAsUser
@@ -52,18 +53,17 @@
 					readOnlyRootFilesystem
 					PodSecurityPolicy
 					RBAC
+					NetworkPolicy
 					seccomp
 					Linux Capabilities
 					AppArmor
 					SELinux
-					NetworkPolicy
 					Falco
 					Open Policy Agent
 					gVisor
 					Kata Containers
 					Nabla Containers
 					Service Mesh
-					mTLS
 					KubeSec
 					KubeBench
 				</section>
@@ -76,12 +76,14 @@
 			</div>
 		</div>
 
-		<script src="js/reveal.js"></script>
+		<script src="js/reveal.min.js"></script>
 
 		<script src="lib/fontawesome-free/js/all.min.js"></script>
 		<script src="lib/twemoji/twemoji.min.js"></script>
 
 		<script>
+			evaluateExcludeLocation();
+
 			// More info about config & dependencies:
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
@@ -95,17 +97,7 @@
 				// Support for presenters - press comma to toggle presenterMode mode, i.e. ⬅/➡️ keys map to
 				// prev/next slide, instead of left/right
 				keyboard: {
-					188: function() {
-						if (!presenterMode) {
-							Reveal.addKeyBinding( { keyCode: 39 }, 'next');
-							Reveal.addKeyBinding( { keyCode: 37 }, 'prev');
-						} else {
-							Reveal.removeKeyBinding( 37 );
-							Reveal.removeKeyBinding( 39 );
-						}
-						presenterMode=!presenterMode;
-						console.log(`Switched to presenter mode: ${presenterMode}`);
-					}
+					188: () => setPresenterMode(true)
 				},
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
@@ -116,6 +108,33 @@
 					{ src: 'plugin/tagcloud/tagcloud.js', async: true }
 				]
 			});
+
+
+			setPresenterMode(false);
+
+			function setPresenterMode(toggle) {
+				const storage = localStorage;
+				const storageKey = 'presenterMode';
+				if (toggle) {
+					storage.setItem(storageKey, JSON.stringify(!JSON.parse(storage.getItem(storageKey))));
+				}
+				const presenterMode = JSON.parse(storage.getItem(storageKey));
+				if (presenterMode) {
+					Reveal.addKeyBinding({keyCode: 39}, 'next');
+					Reveal.addKeyBinding({keyCode: 37}, 'prev');
+				} else {
+					Reveal.removeKeyBinding(37);
+					Reveal.removeKeyBinding(39);
+				}
+				console.log(`Set presenter mode: ${storage.getItem(storageKey)}`);
+			}
+
+			function evaluateExcludeLocation() {
+				document.querySelectorAll('section[excludeLocation]').forEach(element => {
+					if (window.location.search.startsWith(element.getAttribute('excludeLocation'))) {
+						element.remove()
+					}})
+			}
 		</script>
 	</body>
 </html>

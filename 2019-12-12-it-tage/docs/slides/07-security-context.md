@@ -1,23 +1,20 @@
 <!-- .slide: data-background-image="images/subtitle.jpg"  -->
-# 3. Security Context
+# 2. Security Context
 
 
 
-> Defines privilege and access control settings for a Pod or Container
+Defines security parameter per pod/container ➜ container runtime  
 
-🌐 https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
-
-See also: Secure Pods - Tim Allclair  
+<i class='fas fa-thumbtack'></i> Secure Pods - Tim Allclair  
 🎥 https://www.youtube.com/watch?v=GLwmJh-j3rs
 
 
 
-## Recommendation per Container 
+## Recommendations per Container 
 
 ```yaml
 apiVersion: v1
 kind: Pod
-# ...
 metadata:
   annotations: 
     seccomp.security.alpha.kubernetes.io/pod: runtime/default
@@ -33,26 +30,26 @@ spec:
       capabilities:
         drop:
           - ALL
+  enableServiceLinks: false
 ```
+
+Note:
 There is also a securityContext on pod level, but not all of those settings cannot be applied there.
 
 
 
-### Recommendation per Container in Detail (1)
+## Recommendation per Container in Detail
+
+
+
+
+### Enable seccomp
  
-* `allowPrivilegeEscalation: false`
-  * mitigates a process within the container from gaining higher privileges than its parent (the container process)
-  * E.g. `sudo`, `setuid`, Kernel vulnerabilities
-* `seccomp.security.alpha.kubernetes.io/pod: runtime/default` 
-  * Enables e.g. docker's seccomp default profile that block 44/~300 Syscalls 
-  * Has mitigated some Kernel vulns in the past and might in the future 🔮:  
-    🌐 https://docs.docker.com/engine/security/non-events/
-  * no seccomp profile is also one of the findings of the k8s security audit:  
-    🌐 https://www.cncf.io/blog/2019/08/06/open-sourcing-the-kubernetes-security-audit/
-* `"capabilities":  { "drop": [ "ALL" ] }`  
-  * Reduces attack surface
-  * Drops even the default caps:  
-    🌐 https://github.com/moby/moby/blob/master/oci/defaults.go#L14-L30
+* Enables e.g. docker's seccomp default profile that block 44/~300 Syscalls 
+* Has mitigated Kernel vulns in past and might in future 🔮   
+  🌐 https://docs.docker.com/engine/security/non-events/
+* See also k8s security audit:  
+  🌐 https://www.cncf.io/blog/2019/08/06/open-sourcing-the-kubernetes-security-audit/
 
 Notes:
 * seccomp
@@ -62,17 +59,16 @@ Notes:
 
 
 
-### Recommendation per Container in Detail (2)
+### Run as unprivileged user
 
-* `runAsNonRoot: true` - Container is not started when the user is root
+* `runAsNonRoot: true`   
+   Container is not started when the user is root
 * `runAsUser` and `runAsGroup` > 10000  
   * Reduces risk to run as user existing on host 
-  * In case of container escape UID/GID does not have privileges on host/filesystem 
-* `readOnlyRootFilesystem: true` 
-  * Mounts the whole file system in the container read-only. Writing only allowed in volumes.
-  * Makes sure that config or code within the container cannot be manipulated.
-  * It's also more efficient (no CoW).
-  
+  * In case of container escape UID/GID does not have privileges on host
+* Mitigates vuln in `runc` (used by Docker among others)  
+  🌐 https://kubernetes.io/blog/2019/02/11/runc-and-cve-2019-5736/
+
 Notes:
 * `runAsNonRoot` for nginx image: `Error: container has runAsNonRoot and image will run as root`
     * For custom images: Best Practice run as USER
@@ -81,43 +77,101 @@ Notes:
 
 
 
+### No Privilege escalation
+
+* Container can't increase privileges
+* E.g. `sudo`, `setuid`, Kernel vulnerabilities
+
+
+
+### Read-only root file system
+
+* Starts container without read-write layer 
+* Writing only allowed in volumes
+* Config or code within the container cannot be manipulated
+* Perk: More efficient (no CoW)
+
+
+
+### Drop Capabilities
+  
+* Drops even the default caps:  
+  🌐 https://github.com/moby/moby/blob/3152f94/oci/caps/defaults.go
+* Mitigates `CapNetRaw` attack - DNS Spoofing on Kubernetes Clusters  
+  🌐 https://blog.aquasec.com/dns-spoofing-kubernetes-clusters
+
+
+
+### Bonus: No Services in Environment
+
+* By default: Each K8s service written to each container's env vars  
+  ➜ Docker Link legacy, no longer needed
+* But convenient info for attacker where to go next
+
+
 
 ## 🚧️ Security context pitfalls
 
-* `readOnlyRootFilesystem` - most applications need temp folders to write to
-  * Run image locally using docker, access app (<i class='fas fa-thumbtack'></i> run automated e2e/integration tests)
-  * Then use `docker diff` to see a diff between container layer and image
-  * and mount all folders listed there as `emptyDir` volumes in your pod
-* `capabilities` - some images require capabilities
-  * Start container locally with docker and `--cap-drop ALL`, then check logs for errors
-  * Start again add caps as needed with e.g. `--cap-add CAP_CHOWN`, check logs for errors
-  * Start again with additional caps and so forth.
-  * Add all necessary caps to k8s resource
-  * Alternative: Find an image of same app that does not require caps, e.g. `nginxinc/nginx-unprivileged`  
-* `runAsGroup` - beta from K8s 1.14. Before that defaults to GID 0 ☹  
-   🌐 https://github.com/kubernetes/enhancements/issues/213
-
-Note:
-* `runAsGroup` was alpha from 1.10, which is deactivated by default
 
 
+### Read-only root file system
 
-## 🚧️ Security context pitfalls - `runAsNonRoot`
+Application might need temp folder to write to
+
+* Run image locally using docker, access app  
+  <i class='fas fa-thumbtack'></i> Run automated e2e/integration tests
+* Review container's read-write layer via
+
+```bash
+docker diff <containerName>
+```
+
+* Mount folders as `emptyDir` volumes in pod
+
+
+
+### Drop Capabilities
+
+Some images require capabilities
+
+* Find out needed Caps locally:
+
+```bash
+docker run --rm --cap-drop ALL <image>
+# Check error
+docker run --rm --cap-drop ALL --cap-add CAP_CHOWN <image>
+# Keep adding caps until no more error
+```
+* Add necessary caps to k8s resource
+* Alternative: Find image with same app that does not require caps, e.g. `nginxinc/nginx-unprivileged`  
+
+
+
+### Run as unprivileged user
 
 *  Non-root verification only supports numeric user. 🙄  
  * `runAsUser: 100000` in `securityContext` of pod or 
  * `USER 100000` in `Dockerfile` of image.
 * Some official images run as root by default.  
   * Find a **trusted** image that does not run as root  
-    e.g. for nginx, or postgres: <i class='fab fa-docker'></i> https://hub.docker.com/r/bitnami/
+    e.g. for mongo or postgres:   
+    <i class='fab fa-docker'></i> https://hub.docker.com/r/bitnami/
   * Derive from the original image and create your own non-root image  
     e.g. nginx: <i class='fab fa-github'></i> https://github.com/schnatterer/nginx-unpriv
-* UID 100000 might not have permissions to read/write. Possible solutions:
+
+
+
+* UID 100000 might not have permissions. Solutions:
   * Init Container sets permissions for PVCs
-  * Wrong permissions in container ➜ `chmod`/`chown` in `Dockerfile` 
-* Some applications require a user for UID in `/etc/passwd`  
+  * Permissions in image ➜ `chmod`/`chown` in `Dockerfile` 
+* Application requires user for UID in `/etc/passwd`  
   * New image that contains a user for UID e.g. `100000` or
-  * Create `/etc/passwd` with user in init container and mount into application container
+  * Create `/etc/passwd` in init container and mount into app container
+* `runAsGroup` - beta from K8s 1.14. Before that defaults to GID 0 ☹  
+   🌐 https://github.com/kubernetes/enhancements/issues/213
+  
+Note:
+* `runAsGroup` was alpha from 1.10, which is deactivated by default
 
 
 
@@ -140,7 +194,7 @@ Note:
 
 
 
-## 🐐 Demo
+## 🗣️ Demo
 
 <img data-src="images/demo-sec-ctx.svg" width=35% />
 
@@ -152,10 +206,11 @@ Note:
 
 ## 🎁 Wrap-Up: Security Context
 
-My recommendations
+My recommendations:
 
-* Security Context
-  * Start with least privilege
-  * Only differ if there's absolutely no other way
-* BTW - you can enforce Security Context Settings by using Pod Security Policies.  
-  However, those cause a lot more effort to maintain.
+* Start with least privilege
+* Only differ if there's absolutely no other way
+
+
+Note:
+BTW - Security Context settings can be enforced cluster-wide via Pod Security Policies  

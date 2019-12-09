@@ -273,7 +273,7 @@
 	/**
 	 * Check if a node value has the attributes pattern.
 	 * If yes, extract it and add that value as one or several attributes
-	 * the the terget element.
+	 * to the target element.
 	 *
 	 * You need Cache Killer on Chrome to see the effect on any FOM transformation
 	 * directly on refresh (F5)
@@ -358,11 +358,11 @@
 
 				section.innerHTML = marked( markdown );
 				addAttributes( 	section, section, null, section.getAttribute( 'data-element-attributes' ) ||
-								section.parentNode.getAttribute( 'data-element-attributes' ) ||
-								DEFAULT_ELEMENT_ATTRIBUTES_SEPARATOR,
-								section.getAttribute( 'data-attributes' ) ||
-								section.parentNode.getAttribute( 'data-attributes' ) ||
-								DEFAULT_SLIDE_ATTRIBUTES_SEPARATOR);
+					section.parentNode.getAttribute( 'data-element-attributes' ) ||
+					DEFAULT_ELEMENT_ATTRIBUTES_SEPARATOR,
+					section.getAttribute( 'data-attributes' ) ||
+					section.parentNode.getAttribute( 'data-attributes' ) ||
+					DEFAULT_SLIDE_ATTRIBUTES_SEPARATOR);
 
 				// If there were notes, we need to re-add them after
 				// having overwritten the section's HTML
