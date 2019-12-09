@@ -1,26 +1,28 @@
 # Summary
 
-IMHO ever person working with k8s should *at least* adhere to the following:
-
-* Enable RBAC!
-* Don't allow arbitrary connection between pods.   
-  (e.g. use Network Policies to whitelist ingresses)
-* Start with least privilege for your containers:
-    * Block privilege escalation via the security context of each container
-    * Enable the seccomp default module via annotation of each pod
-    * Try to run your containers 
-      * as non-root user, with UID & GID >= 10000,  
-      * with a read-only file system and
-      * without capabilities.
-* Least privilege rules can either be set per container (securityContext) or cluster-wide (PodSecurityPolicy) 
+* Enable RBAC
+* Don't allow arbitrary connections between pods, e.g. via NetPols   
+* Start with least privilege for your containers
+  * using either securityContext or
+  * PodSecurityPolicy 
 
 
 
-<!-- .slide: data-background-image="images/title.svg"  -->
- 
+## What for?
+
+* Increase security <!-- .element: class="fragment"  -->
+* Reduce risk of data breach <!-- .element: class="fragment"  -->
+<li class="fragment"> Don't end up on  <a href='https://twitter.com/haveibeenpwned' class="social" target="_blank"><i class='fab fa-twitter'></i>@haveibeenpwned</a> </li>  
+
+
+
+
+
+<!-- .slide: data-background-image="images/title.svg"-->
+
 ### Johannes Schnatterer
 
-*Cloudogu GmbH*
+Cloudogu GmbH
 
 🌐  https://cloudogu.com/schulungen
 

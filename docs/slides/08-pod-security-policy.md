@@ -1,36 +1,33 @@
 <!-- .slide: data-background-image="images/subtitle.jpg"  -->
-# <font size="5">4 things every developer should know about K8s security?</font>
-
-<h2 class="fragment">Pod Security Policies (PSP)</h2>
+# 3. Pod Security Policies <br/>(PSP) 
 
 
 
-> a cluster-level resource \[..\] that define a set of conditions that a pod must run with in order to be accepted into the system
-
-🌐 https://kubernetes.io/docs/concepts/policy/pod-security-policy/
-
-
-
-* can be used to enforce security context cluster-wide   
-* has additional options such as block pods that try to
+* enforce security context cluster-wide   
+* additional options for blocking pods trying to
   * enter node's Linux namespaces (net, PID, etc.)
-  * mounting the docker socket, 
+  * mounting docker socket, 
   * binding ports to nodes,
   * starting `privileged` containers
   * etc.
-* more effort than security context and different syntax as in `securityContext` 🙄 
+* more effort than security context and different syntax  🙄 
   
 ➜ Still highly recommended!
 
 
 
+## Recommendation
 
-<div style="text-align: center;">
-Too much ground to cover for 45 min!
-</div>
-<div style="font-size: 1000%;text-align: center;">
+
+<a href="https://github.com/cloudogu/k8s-security-demos/blob/master/4-pod-security-policies/demo/01-psp-restrictive.yaml"><img data-src="images/psp.png" width="80%" style="filter: blur(2px);-webkit-filter: blur(2px);"/></a>
+
+<i class='fab fa-github'></i> https://github.com/cloudogu/k8s-security-demos/blob/master/4-pod-security-policies/demo/01-psp-restrictive.yaml
+
+
+
+<!-- .slide: style="text-align: center;"  -->
+## Too much ground to cover for 45 min!
+<div style="font-size: 800%">
 ⏱️
 </div>
-<div style="text-align: center;">
 See Demo Repo on last slide
-</div>

@@ -1,22 +1,22 @@
 <!-- .slide: data-background-image="images/subtitle.jpg"  -->
-# 2. Network Policies (`netpol`)
+# 1. Network Policies <br/>(netpol)
 
 
 
-A kind of firewall for communication between pods.
+A "firewall" for communication between pods.
 
-* Apply to pods (`podSelector`) 
-  * within a namespace
+* Applied to pods 
+  * within namespace
   * via labels
-* Ingress or egress
+* Ingress / egress
   * to/from pods (in namespaces) or CIDRs (egress only)
   * for specific ports (optional)
-* Are enforced by the CNI Plugin (e.g. Calico)
+* Enforced by the CNI Plugin (e.g. Calico)
 * <font color="red">⚠</font> No Network Policies: All traffic allowed
 
 
 
-## <i class='fas fa-thumbtack'></i> Helpful to get started:
+## <i class='fas fa-thumbtack'></i> Helpful to get started
 
 <img data-src="images/network-policy-allow-external.gif" width=75% />
 
@@ -34,17 +34,21 @@ kubectl describe netpol <name>
 
 In every namespace except `kube-system`:
  
-* Deny all ingress traffic between pods ...
-* ... and then whitelist all allowed routes.
+* Deny ingress between pods,
+* then whitelist all allowed routes.
 
 
 
-## Advanced: ingress to `kube-system` namespace
+## Advanced: ingress to `kube-system`
 
-<font color="red">⚠</font> You might stop the apps in your cluster from working
+<font color="red">⚠</font> Might stop the apps in your cluster from working
 
-For example, don't forget to:
+Don't forget to:
 
+* Allow external access to ingress controller  
+* Allow access to kube-dns/core-dns to every namespace   
+
+Note:
 * Allow external access to ingress controller  
   (otherwise no more external access on any cluster resource)  
 * Allow access to kube-dns/core-dns to every namespace   
@@ -55,38 +59,46 @@ For example, don't forget to:
 ## Advanced: egress
 
 * Verbose solution: 
-  * Deny all egress traffic between pods ...
-  * ... and then whitelist all allowed routes...
-  * ... repeating all ingress rules. 🙄
+  * Deny egress between pods,
+  * then whitelist all allowed routes,
+  * repeating all ingress rules. 🙄
 * More pragmatic solution:
-  * Allow only egress traffic within the cluster...
-  * ... and then whitelist pods that need access to the internet.
+  * Allow only egress within the cluster,
+  * then whitelist pods that need access to internet.
 
 
 
 ## 🚧️Net pol pitfalls
 
-* Don't forget to whitelist your monitoring tools (e.g. Prometheus)
-* A restart of the pods might be necessary for the netpol to become effective  
-  (e.g. Prometheus)
+* Whitelisting monitoring tools (e.g. Prometheus)
+* Restart might be necessary (e.g. Prometheus)
+* No labels on namespaces by default
+* `egress` more recent than `ingress` rules and less sophisticated
+* Policies might not be supported by CNI Plugin.  
+  Testing!    
+  🌐 https://www.inovex.de/blog/test-kubernetes-network-policies/
+
+Note:
+* Matching both pods and namespace needs k8s 1.11+
+* Restart might be necessary for the netpol to become effective
 * In order to match namespaces, labels need to be added to the namespaces, e.g.
 
 ```bash
 kubectl label namespace/kube-system namespace=kube-system
 ```
-
-* Matching both pods and namespace is only possible from k8s 1.11+
-* Restricting `kube-system` might be more of a challenge (DNS, ingress controller)
-* `egress` rules are more recent feature than `ingress` rules and seem less sophisticated
-* Policies might not be supported by CNI Plugin.  
-  Make sure to test them!  
-  🌐 https://www.inovex.de/blog/test-kubernetes-network-policies/
 * On GKE: "at least 2 nodes of type n1-standard-1" are required
+* Restricting `kube-system` might be more of a challenge (DNS, ingress controller)
 
 
 
-## Limitations
+## More Features?
 
+* Proprietary extensions of CNI Plugin (e.g. cilium or calico)
+* Service Meshes: similar features, also work with multiple clusters  
+  ➜ different strengths, support each other  
+  🌐 https://istio.io/blog/2017/0.1-using-network-policy/
+
+Note: 
 * no option for cluster-wide policies
 * whitelisting egress for domain names instead of CIDRs
 * filtering on L7 (e.g. HTTP or gRPC)
@@ -94,16 +106,16 @@ kubectl label namespace/kube-system namespace=kube-system
 
 Possible solutions:
 * Proprietary extensions of CNI Plugin (e.g. cilium or calico)
-* Service Meshes provides similar features and work also work with multiple clusters.  
-  Service Meshes operate on L7, NetPol on L3/4  
+* Service Meshes: similar features, also work with multiple clusters;  
+  operate on L7, NetPol on L3/4  
   ➜ different strengths, support each other  
   🌐 https://istio.io/blog/2017/0.1-using-network-policy/
 
 
 
-## 🐐 Demo
+## 🗣️ Demo
 
-<img data-src="images/demo-netpol-wo-prometheus.svg" width=45% />
+<img data-src="images/demo-netpol-wo-prometheus.svg" width=40% />  
 
 * [nosqlclient](http://nosqlclient)
 * [web-console](http://web-console/)
@@ -123,7 +135,7 @@ Note:
 
 My recommendations:
 
-* Definitely use DENY all ingress rule in non-`kube-system` namespaces
+* Ingress whitelisting in non-`kube-system` namespaces
 * Use with care
-  * rules in `kube-system`
-  * `egress` rules
+  * whitelisting in `kube-system`
+  * `egress` whitelisting for cluster-external traffic 
