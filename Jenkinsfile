@@ -69,7 +69,11 @@ node('docker') {
         }
 
         stage('Deploy GH Pages') {
-            git.pushGitHubPagesBranch('dist', versionName, conferenceName)
+            if (env.BRANCH_NAME == 'master') {
+                git.pushGitHubPagesBranch('dist', versionName, conferenceName)
+            } else {
+                echo "Skipping deploy to GH pages, because not on master branch"
+            }
         }
 
         stage('Deploy Nexus') {
