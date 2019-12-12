@@ -2,7 +2,7 @@
   "_args": [
     [
       "@fortawesome/fontawesome-free@5.8.1",
-      "/tmp/workspace/ithub_k8s-security-3-things_PR-1"
+      "/tmp/workspace/hub_k8s-security-3-things_master"
     ]
   ],
   "_from": "@fortawesome/fontawesome-free@5.8.1",
@@ -27,7 +27,7 @@
   ],
   "_resolved": "https://registry.npmjs.org/@fortawesome/fontawesome-free/-/fontawesome-free-5.8.1.tgz",
   "_spec": "5.8.1",
-  "_where": "/tmp/workspace/ithub_k8s-security-3-things_PR-1",
+  "_where": "/tmp/workspace/hub_k8s-security-3-things_master",
   "author": {
     "name": "Dave Gandy",
     "email": "dave@fontawesome.com",
