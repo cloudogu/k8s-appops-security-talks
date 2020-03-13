@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>${TITLE}</title>
+
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/reveal.min.css">
+	<link rel="stylesheet" href="${THEME_CSS}">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/monokai.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement( 'link' );
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName( 'head' )[0].appendChild( link );
+	</script>
+</head>
+<body>
+<div class="reveal">
+	${FOOTER_HTML}
+	<div class="slides">
+		${SLIDES_HTML}
+	</div>
+</div>
+
+<script src="js/reveal.min.js"></script>
+
+<script src="lib/fontawesome-free/js/all.min.js"></script>
+<script src="lib/twemoji/twemoji.min.js"></script>
+
+${ADDITIONAL_SCRIPT}
+
+<script>
+	const showNotesForPrinting = true;
+
+	evaluateExcludeLocation();
+	const showNotes = showNotesForPrinting && window.location.search.startsWith('?print-pdf') ? "separate-page" : undefined;
+	// More info about config & dependencies:
+	// - https://github.com/hakimel/reveal.js#configuration
+	// - https://github.com/hakimel/reveal.js#dependencies
+	Reveal.initialize({
+		hash: true,
+		history: true,
+		// Use the default (h.v), because the printed version will always have this anyway
+		slideNumber: 'true',
+		// Support for presenters - press comma to toggle presenterMode mode, i.e. ⬅/➡️ keys map to
+		// prev/next slide, instead of left/right
+		keyboard: {
+			188: () => setPresenterMode(true)
+		},
+		showNotes: showNotes,
+		dependencies: [
+			// Interpret Markdown in <section> elements
+			{ src: 'plugin/markdown/marked.js' },
+			{ src: 'plugin/markdown/markdown.js' },
+			// Speaker notes
+			{ src: 'plugin/notes/notes.js', async: true },
+			// Syntax highlight for <code> elements
+			{ src: 'plugin/highlight/highlight.js', async: true },
+			// Zoom in and out with Ctrl+Alt+click
+			{ src: 'plugin/zoom-js/zoom.js', async: true },
+			// Search slides  with Ctrl+Shift+f
+			{ src: 'plugin/search/search.js', async: true },
+			// Standardizes emoji images
+			{ src: 'plugin/reveal-twemoji/reveal-twemoji.js' },
+			${ADDITIONAL_DEPENDENCIES}
+		]
+	});
+
+	setPresenterMode(false);
+
+	function setPresenterMode(toggle) {
+		const storage = localStorage;
+		const storageKey = 'presenterMode';
+		if (toggle) {
+			storage.setItem(storageKey, JSON.stringify(!JSON.parse(storage.getItem(storageKey))));
+		}
+		const presenterMode = JSON.parse(storage.getItem(storageKey));
+		if (presenterMode) {
+			Reveal.addKeyBinding({keyCode: 39}, 'next');
+			Reveal.addKeyBinding({keyCode: 37}, 'prev');
+		} else {
+			Reveal.removeKeyBinding(37);
+			Reveal.removeKeyBinding(39);
+		}
+		console.log(`Set presenter mode: ${storage.getItem(storageKey)}`);
+	}
+
+	function evaluateExcludeLocation() {
+		document.querySelectorAll('section[excludeLocation]').forEach(element => {
+			if (window.location.search.startsWith(element.getAttribute('excludeLocation'))) {
+				element.remove()
+			}})
+	}
+</script>
+${BODY_END_HTML}
+</body>
+</html>
