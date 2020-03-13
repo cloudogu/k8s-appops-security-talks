@@ -1,7 +1,7 @@
 #!groovy
 
 //Keep this version in sync with the one used in Maven.pom-->
-@Library('github.com/cloudogu/ces-build-lib@9857cf1')
+@Library('github.com/cloudogu/ces-build-lib@1.35.1')
 import com.cloudogu.ces.cesbuildlib.*
 
 node('docker') {
@@ -19,17 +19,15 @@ node('docker') {
             ])
     ])
 
-    String conferenceName = '2019-12-12-it-tage'
-    pdfBaseName = '3-things-every-developer-should-know-about-k8s-security'
-
+    String conferenceName = '2020-03-18-javaLand'
+    pdfBaseName = 'Good-Practices-for-Secure-Kubernetes-AppOps'
+    String imageBaseName = 'cloudogu/k8s-security-3-things'
+    
     def introSlidePath = 'docs/slides/00-title.md'
-    nodeImageVersion = 'node:11.14.0-alpine'
-    headlessChromeVersion = 'yukinying/chrome-headless-browser:80.0.3970.5'
+    headlessChromeVersion = 'yukinying/chrome-headless-browser:82.0.4068.4'
 
     Git git = new Git(this, 'cesmarvin')
-    Docker docker = new Docker(this)
-    Maven mvn = new MavenInDocker(this, "3.5.0-jdk-8")
-
+    
     catchError {
 
         stage('Checkout') {
@@ -37,58 +35,35 @@ node('docker') {
             git.clean('')
         }
 
-        String versionName = createVersion(mvn)
-        String pdfPath = createPdfName()
+        String pdfName = createPdfName()
 
+        String versionName = "${new Date().format('yyyyMMddHHmm')}-${git.commitHashShort}"
+        String imageName = "${imageBaseName}:${versionName}"
+        String packagePath = 'dist'
+        def image
+        
         stage('Build') {
-            docker.image(nodeImageVersion)
-            // Avoid  EACCES: permission denied, mkdir '/.npm'
-                    .mountJenkinsUser()
-                    .inside {
-                        echo 'Building presentation'
-                        sh 'npm install'
-                        // Don't run tests, because we're not developing reveal here
-                        sh 'node_modules/grunt/bin/grunt package --skipTests'
-                    }
-        }
-
-        stage('package') {
-            // "unzip" is not installed by default on many systems, so use it within a container
-            docker.image('garthk/unzip').inside {
-                sh 'unzip reveal-js-presentation.zip -d dist'
-            }
-
+            sh "docker pull cloudogu/reveal.js"
             writeVersionNameToIntroSlide(versionName, introSlidePath)
+            image = docker.build imageName
         }
 
-        stage('print pdf') {
-            printPdf pdfPath
+        stage('Print PDF & Package WebApp') {
+            String pdfPath = "${packagePath}/${pdfName}"
+            printPdfAndPackageWebapp image, pdfName, packagePath
             archiveArtifacts pdfPath
-            // Deploy PDF next to the app, use a constant name for the PDF for easier URLs.
-            sh "mv '${pdfPath}' 'dist/${createPdfName(false)}'"
+            // Use a constant name for the PDF for easier URLs, for deploying
+            sh "mv '${pdfPath}' '${packagePath}/${createPdfName(false)}'"
+            // Build image again, so PDF is added
+            image = docker.build imageName
         }
 
         stage('Deploy GH Pages') {
+            
             if (env.BRANCH_NAME == 'master') {
-                git.pushGitHubPagesBranch('dist', versionName, conferenceName)
+                git.pushGitHubPagesBranch(packagePath, versionName, conferenceName)
             } else {
                 echo "Skipping deploy to GH pages, because not on master branch"
-            }
-        }
-
-        stage('Deploy Nexus') {
-            if (params.deployToNexus) {
-
-                mvn.useDeploymentRepository([
-                        // Must match the one in pom.xml!
-                        id: 'ecosystem.cloudogu.com',
-                        credentialsId: 'ces-nexus'
-                ])
-
-                // Artifact is used in pom.xml
-                mvn.deploySiteToNexus("-Dartifact=${env.BRANCH_NAME} ")
-            } else {
-                echo "Skipping deployment to Nexus because parameter is set to false."
             }
         }
     }
@@ -96,7 +71,6 @@ node('docker') {
     mailIfStatusChanged(git.commitAuthorEmail)
 }
 
-String nodeImageVersion
 String pdfBaseName
 String headlessChromeVersion
 
@@ -113,36 +87,22 @@ String createPdfName(boolean includeDate = true) {
     return pdfName
 }
 
-String createVersion(Maven mvn) {
-    // E.g. "201708140933-1674930"
-    String versionName = "${new Date().format('yyyyMMddHHmm')}-${new Git(this).commitHashShort}"
-
-    if (env.BRANCH_NAME == "master") {
-        mvn.additionalArgs = "-Drevision=${versionName} "
-        currentBuild.description = versionName
-        echo "Building version $versionName on branch ${env.BRANCH_NAME}"
-    } else {
-        versionName += '-SNAPSHOT'
-    }
-    return versionName
-}
-
 void writeVersionNameToIntroSlide(String versionName, String introSlidePath) {
-    def distIntro = "dist/${introSlidePath}"
-    String filteredIntro = filterFile(distIntro, "<!--VERSION-->", "Version: $versionName")
-    sh "cp $filteredIntro $distIntro"
-    sh "mv $filteredIntro $introSlidePath"
+    String filteredIntro = filterFile(introSlidePath, "<!--VERSION-->", "Version: $versionName")
+    sh "cp ${filteredIntro} ${introSlidePath}"
+    sh "mv ${filteredIntro} ${introSlidePath}"
 }
 
-void printPdf(String pdfPath) {
+void printPdfAndPackageWebapp(def image, String pdfName, String distPath) {
     Docker docker = new Docker(this)
 
-    docker.image(nodeImageVersion).withRun(
-            "-v ${WORKSPACE}:/workspace -w /workspace",
-            'npm run start') { revealContainer ->
+    image.withRun("-v ${WORKSPACE}:/workspace -w /workspace") { revealContainer ->
 
+        // Extract rendered reveal webapp from container for further processing
+        sh "docker cp ${revealContainer.id}:/reveal '${distPath}'"
+        
         def revealIp = docker.findIp(revealContainer)
-        if (!revealIp || !waitForWebserver("http://${revealIp}:8000")) {
+        if (!revealIp || !waitForWebserver("http://${revealIp}:8080")) {
             echo "Warning: Couldn't deploy reveal presentation for PDF printing. "
             echo "Docker log:"
             echo new Sh(this).returnStdOut("docker logs ${revealContainer.id}")
@@ -154,34 +114,10 @@ void printPdf(String pdfPath) {
                 .mountJenkinsUser()
         // Try to avoid OOM for larger presentations by setting larger shared memory
                 .inside("--shm-size=2G") {
-
-                    sh "/usr/bin/google-chrome-unstable --headless --no-sandbox --disable-gpu --print-to-pdf='${pdfPath}' " +
-                            "http://${revealIp}:8000/?print-pdf"
+                    // If more flags should ever be neccessary: https://peter.sh/experiments/chromium-command-line-switches
+                    sh "/usr/bin/google-chrome-unstable --headless --no-sandbox --disable-gpu --print-to-pdf='${distPath}/${pdfName}' " +
+                            "http://${revealIp}:8080/?print-pdf"
                 }
-    }
-}
-
-void deployToKubernetes(String versionName) {
-
-    String imageName = "cloudogu/continuous-delivery-slides:${versionName}"
-    def image = docker.build imageName
-    docker.withRegistry('', 'hub.docker.com-cesmarvin') {
-        image.push()
-        image.push('latest')
-    }
-
-    withCredentials([file(credentialsId: 'kubeconfig-oss-deployer', variable: 'kubeconfig')]) {
-
-        withEnv(["IMAGE_NAME=$imageName"]) {
-
-            kubernetesDeploy(
-                    credentialsType: 'KubeConfig',
-                    kubeConfig: [path: kubeconfig],
-
-                    configs: 'k8s.yaml',
-                    enableConfigSubstitution: true
-            )
-        }
     }
 }
 

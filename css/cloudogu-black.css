@@ -23,7 +23,7 @@ body {
 }
 
 .reveal {
-  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  font-family: "Exo", "Droid Sans", sans-serif;
   font-size: 31px;
   font-weight: normal;
   color: white; }
@@ -38,8 +38,8 @@ body {
   background: #23A3DD;
   text-shadow: none; }
 
-.reveal .slides section,
-.reveal .slides section > section {
+.reveal .slides > section,
+.reveal .slides > section > section {
   line-height: 1.5;
   font-weight: inherit;
   text-align: left;}
@@ -54,7 +54,7 @@ body {
 .reveal h6 {
   margin: 50px 80px 20px 0;
   color: white;
-  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  font-family: "Exo", "Droid Sans", sans-serif;
   font-weight: 600;
   line-height: 1.8;
   letter-spacing: normal;
@@ -105,18 +105,18 @@ body {
   margin: 0 0 0 1em; }
 
 .reveal ol { list-style: none; counter-reset: li }
-  li::before {content: counter(li); color: #23A3DD;
+li::before {content: counter(li); color: #23A3DD;
   display: inline-block; width: 1em;
   margin-left: -1em}
-  li {counter-increment: li}
+li {counter-increment: li}
 .reveal ol li::before {content: counter(li); color: #23A3DD;
-    display: inline-block; width: 1em; margin-left: -1.5em;
-    margin-right: 0.5em; text-align: right; direction: rtl}
+  display: inline-block; width: 1em; margin-left: -1.5em;
+  margin-right: 0.5em; text-align: right; direction: rtl}
 .reveal ul {
   list-style-type: none; }
-  li::before {content: "•"; color:#23A3DD;
-    display: inline-block; width: 1em;
-    margin-left: -1em}
+li::before {content: "•"; color:#23A3DD;
+  display: inline-block; width: 1em;
+  margin-left: -1em}
 .reveal ul ul {
   list-style-type: none; }
 
@@ -130,10 +130,10 @@ body {
   display: block;
   margin-left: 40px; }
 
-  .reveal ol ul li::before {content: "•"; color:#23A3DD;
-    display: inline-block; width: 1em;
-    margin-left: -1em}
- 
+.reveal ol ul li::before {content: "•"; color:#23A3DD;
+  display: inline-block; width: 1em;
+  margin-left: -1em}
+
 .reveal dt {
   font-weight: bold; }
 
@@ -141,11 +141,11 @@ body {
   margin-left: 40px; }
 
 .reveal blockquote {
-    background: rgba(255, 255, 255, 0.05);
-    border-left: 5px solid #1B7DAA;
-    margin: 1.5em 10px;
-    padding: 0.5em 10px;
-  }
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 5px solid #1B7DAA;
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+}
 
 
 .reveal blockquote p:first-child,
@@ -165,7 +165,7 @@ body {
   font-family: monospace;
   line-height: 1.2em;
   word-wrap: break-word;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15); }
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3); }
 
 .reveal code {
   font-family: monospace;
@@ -251,10 +251,10 @@ body {
   box-shadow: none; }
 
 .reveal section img.emoji {
-   height: 1em;
-   width: 1em;
-   margin: 0 .05em 0 .1em;
-   vertical-align: -0.1em;
+  height: 1em;
+  width: 1em;
+  margin: 0 .05em 0 .1em;
+  vertical-align: -0.1em;
 }
 
 .reveal a img {

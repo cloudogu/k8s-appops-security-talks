@@ -1,12 +1,9 @@
 # Ignore all
 **
 # Whitelist
-!index.html
-!css/**
-!docs/**
-!images/**
-!js/**
-!lib/**
-!plugin/**
-!favicon.ico
-!exercises
+!docs
+!images
+!resources
+!plugin
+!css
+!*.pdf

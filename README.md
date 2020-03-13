@@ -10,4 +10,15 @@ See
 * [demos](https://github.com/cloudogu/k8s-security-demos)
 
 This presentation uses reveal.js.
-For more info on how to continuously deliver presentations see [cloudogu/continuous-delivery-slides](https://github.com/cloudogu/continuous-delivery-slides/).
+For more info on how to continuously deliver presentations see [cloudogu/reveal.js-docker](https://github.com/cloudogu/reveal.js-docker/).
+
+# Deployment
+
+```bash
+# Development mode (with live reloading)
+./startPresentation.sh
+
+# Production Mode (smaller, more secure, just a static HTML site served by NGINX)
+docker build -t prod .
+docker run -p 8080:8080 prod
+```
