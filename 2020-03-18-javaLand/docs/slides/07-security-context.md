@@ -1,12 +1,15 @@
 <!-- .slide: data-background-image="images/subtitle.jpg"  -->
-# 2. Security Context
+# Security Context
 
 
 
-Defines security parameter per pod/container ➜ container runtime  
+* Security Context: Defines security parameters *per pod/container*  
+   ➜ container runtime
+* <i class='fas fa-thumbtack'></i> Secure Pods - Tim Allclair  
+  🎥 https://www.youtube.com/watch?v=GLwmJh-j3rs
+* ↔️ Cluster-wide security parameters: See Pod Security Policies  
 
-<i class='fas fa-thumbtack'></i> Secure Pods - Tim Allclair  
-🎥 https://www.youtube.com/watch?v=GLwmJh-j3rs
+
 
 
 
@@ -31,6 +34,7 @@ spec:
         drop:
           - ALL
   enableServiceLinks: false
+  automountServiceAccountToken: false # When not communicating with API Server  
 ```
 
 Note:
@@ -46,7 +50,7 @@ There is also a securityContext on pod level, but not all of those settings cann
 ### Enable seccomp
  
 * Enables e.g. docker's seccomp default profile that block 44/~300 Syscalls 
-* Has mitigated Kernel vulns in past and might in future 🔮   
+* 🔥Has mitigated Kernel vulns in past and might in future 🔮   
   🌐 https://docs.docker.com/engine/security/non-events/
 * See also k8s security audit:  
   🌐 https://www.cncf.io/blog/2019/08/06/open-sourcing-the-kubernetes-security-audit/
@@ -64,9 +68,9 @@ Notes:
 * `runAsNonRoot: true`   
    Container is not started when the user is root
 * `runAsUser` and `runAsGroup` > 10000  
-  * Reduces risk to run as user existing on host 
-  * In case of container escape UID/GID does not have privileges on host
-* Mitigates vuln in `runc` (used by Docker among others)  
+  * 🔥 Reduces risk to run as user existing on host 
+  * 🔥 In case of container escape UID/GID does not have privileges on host
+* 🔥 E.g. mitigates vuln in `runc` (used by Docker among others)  
   🌐 https://kubernetes.io/blog/2019/02/11/runc-and-cve-2019-5736/
 
 Notes:
@@ -80,7 +84,7 @@ Notes:
 ### No Privilege escalation
 
 * Container can't increase privileges
-* E.g. `sudo`, `setuid`, Kernel vulnerabilities
+* 🔥 E.g. `sudo`, `setuid`, Kernel vulnerabilities
 
 
 
@@ -88,7 +92,7 @@ Notes:
 
 * Starts container without read-write layer 
 * Writing only allowed in volumes
-* Config or code within the container cannot be manipulated
+* 🔥 Config or code within the container cannot be manipulated
 * Perk: More efficient (no CoW)
 
 
@@ -97,7 +101,7 @@ Notes:
   
 * Drops even the default caps:  
   🌐 https://github.com/moby/moby/blob/3152f94/oci/caps/defaults.go
-* Mitigates `CapNetRaw` attack - DNS Spoofing on Kubernetes Clusters  
+* 🔥 E.g. Mitigates `CapNetRaw` attack - DNS Spoofing on Kubernetes Clusters  
   🌐 https://blog.aquasec.com/dns-spoofing-kubernetes-clusters
 
 
@@ -106,7 +110,31 @@ Notes:
 
 * By default: Each K8s service written to each container's env vars  
   ➜ Docker Link legacy, no longer needed
-* But convenient info for attacker where to go next
+* 🔥But convenient info for attacker where to go next
+
+Note:
+Can also cause unpredictable errors: e.g. 
+* service `POSTGRES` -> env `POSTGRES_PORT` mounted into every port in Namespace.
+* Is picked up by e.g. [keycloak](https://github.com/keycloak/keycloak-containers/blob/master/server/README.md) container.
+  Even it not planned!
+  Another example - docker/registry?
+  
+
+
+
+### Bonus: Disable access to K8s API
+
+* SA Token in every pod for api-server authn 
+```bash
+curl --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt \
+  -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \
+  https://${KUBERNETES_SERVICE_HOST}/api/v1/secrets
+```
+* If not needed, disable!
+* No authentication possible
+* 🔥 Lesser risk of security misconfig or vulns in authz  
+  <!-- These blanks disable the horizontal scroll bar in the listing above :-( -->
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
 

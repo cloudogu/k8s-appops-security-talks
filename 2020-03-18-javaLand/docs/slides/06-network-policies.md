@@ -1,5 +1,5 @@
 <!-- .slide: data-background-image="images/subtitle.jpg"  -->
-# 1. Network Policies <br/>(netpol)
+# Network Policies <br/>(netpol)
 
 
 
