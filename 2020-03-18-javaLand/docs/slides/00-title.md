@@ -15,9 +15,9 @@ Johannes Schnatterer
 
 
 <div class="title-version">
-Version: 202003161809-d789182
+Version: 202003162042-6b9d82d
 </div>
 
-<h2><a href="3%20things%20every%20developer%20should%20know%20about%20K8s%20security.pdf">
+<h3><a href="Good-Practices-for-Secure-Kubernetes-AppOps.pdf">
    <i class="far fa-file-pdf"></i>
-</a></h2>
+</a></h3>
