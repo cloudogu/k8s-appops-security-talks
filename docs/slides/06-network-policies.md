@@ -1,5 +1,5 @@
 <!-- .slide: data-background-image="images/subtitle.jpg"  -->
-# 1. Network Policies <br/>(netpol)
+# Network Policies <br/>(netpol)
 
 
 
@@ -95,7 +95,7 @@ kubectl label namespace/kube-system namespace=kube-system
 
 * Proprietary extensions of CNI Plugin (e.g. cilium or calico)
 * Service Meshes: similar features, also work with multiple clusters  
-  ➜ different strengths, support each other  
+  ➡️ different strengths, support each other  
   🌐 https://istio.io/blog/2017/0.1-using-network-policy/
 
 Note: 
@@ -108,14 +108,14 @@ Possible solutions:
 * Proprietary extensions of CNI Plugin (e.g. cilium or calico)
 * Service Meshes: similar features, also work with multiple clusters;  
   operate on L7, NetPol on L3/4  
-  ➜ different strengths, support each other  
+  ➡️ different strengths, support each other  
   🌐 https://istio.io/blog/2017/0.1-using-network-policy/
 
 
 
 ## 🗣️ Demo
 
-<img data-src="images/demo-netpol-wo-prometheus.svg" width=40% />  
+<img data-src="images/demo-netpol.svg" width=40% />  
 
 * [nosqlclient](http://nosqlclient)
 * [web-console](http://web-console/)
@@ -124,10 +124,9 @@ Note:
 * curl --output /tmp/mongo.tgz https://downloads.mongodb.org/linux/mongodb-shell-linux-x86_64-3.4.18.tgz && tar xf /tmp/mongo.tgz -C /tmp
 * /tmp/mongodb-linux-x86_64-3.4.18/bin/mongo users --host mongodb.production.svc.cluster.local --eval 'db.users.find().pretty()'  
 -- Limited time: Only show ingress whitelisting
-➜ Offtopic: MongoDB recommendation ➜ not `mongo` image but `bitnami/mongo` (helm chart)
-* [Demo Script](/demo/2-network-policies/Readme.md) 
-* [plantUml src](http://www.plantuml.com/plantuml/uml/dOzFQy904CNl-oc6zE0fD2gev514GNeGyI3qK3niigCisTr9zmzIYj-zcvYIOFySkgUPUVD-RtRfFBS-QCLS9KtDBTSWZKTxuYN21mDOyR8wMmf6h4cHXOV9b4-5Q1Io0cqt7SzcYuLWLpO0SMlfqaA6rhkbadHD1et_Hnh0XeplPflsDN3M_o1vFXps2N07snLZXaGShLLmKOST-WlP2lQaP2dH9V62YApZ2VmSztPSeuiTmgWA1QRkFThqg5c3-5uFbkD9LiU6ddHDSfEsgoEawLE_4yVNt-02JpmetuDVi80r6KSAZtTHBNIeGmuNBDBorkQBxA-asf88fPTa-Z13xasLIgBnFuODzHWsQFDfbcNV89rDapcJA1fBL-QFNyLadetdxPrNjaGZWbQV)
-* [plantUml src with prometheus](http://www.plantuml.com/plantuml/uml/dKzDRnen4BtxLuosXvnMMKALK0vL15BKGnHnGEgXuc3iWLfhU-ZOBgeg_djdWMPNbEOGdpppFjwynvGrvnAyIgsBEyqwW8iPUQCDmcy5CDEctJALQEVaYU73tLYFhUqGOejytexkxoSJgmvgOAIPQNyq6KelI8R2ZYB6_8uqW2UA-RnxEhxENFKDgY_BvQ82dU1vfbGaAwkvBqbmUC6y9svXGTuPXwcI2yHo9oVehV1UTC0a4y9DMzPOfryY2pST3UHzMxB6ZMjNdNjr7geJz3nRGLr_xZcoFlpFtE965vzxuw-uXZd5H1vN5r57qo4EKzZZkZQdSJfftaeA55qcTd7RXosO0kRlMDBLh04iKRlNgKx8Fv4byDBcehceykaht4bpAons9hrrfgJOOhAZs9yPAVtmnZkC-UgTGrmY1-Dqt3JDloOdMQ2u9Rlk9EVlzFRlv-wX6JrSRzVh1i9Fe-RZQxrZluDwn6XBy7y0)
+➡️ Offtopic: MongoDB recommendation ➡️ not `mongo` image but `bitnami/mongo` (helm chart)
+* [Demo Script](https://github.com/cloudogu/k8s-security-demos/blob/master/2-network-policies/Readme.md) 
+* [plantUml src](https://www.plantuml.com/plantuml/uml/dL1BQzj04BxhLspLGawoP9icGfGG70Y5Xf23eOVMXzNks5wqcjdk0rEA_tjtPRKMwGCJNRGptsE-cJldkVMXrzaRXK872S5gjlVUkAOiBJ_CTihlGniSM47e0VrCK5_sIkmLwD9eZabUTA45Y-315SvO5Vzbpvq7Mrfm5Ao0igj_OqL0pLlG88l5UoFyJAK8cUiK6cvvpnH6wPOBO3yonbPST3jB0UKzQRBixMB9br8cXAm4EtRdrzTrBRFZr8XRIuV1P2fzGOeR6K90_uffZ3qG-h7tC7p9F3jla7zShvzpnXrxN6KPaeojJxLZzpga0-LnQ7GnSIhVHUY9z-1C4bwbenRkUsJrLud6ulTbRJbiLRT9XlbOv2VeSRLXHN5xvcHiibl-uHs2DwHll-8J-6VIRaY5PXvvnt-5aB3bGVjpWC_GncEY8msR5v66uLESDUm0RI5EPLDN5oPQ_2-HiII3y8emXRhGSNcAYkI-QQ5L9Fyr_1IFuITbiwogwW-JKTOJxaYsIJ8-c_BNOt5JpM-6VOxP7Q0ClVu9)
 
 
 

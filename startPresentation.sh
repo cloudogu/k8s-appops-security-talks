@@ -9,6 +9,5 @@ docker run --rm \
     -v $(pwd)/plugin/tagcloud:/reveal/plugin/tagcloud \
     -v $(pwd)/resources:/resources \
     -e THEME_CSS='css/cloudogu-black.css' \
-    -e ADDITIONAL_DEPENDENCIES="{ src: 'plugin/tagcloud/tagcloud.js', async: true }" \
     -p 8000:8000 -p 35729:35729 \
     cloudogu/reveal.js:$(head -n1 Dockerfile | sed 's/.*:\([^ ]*\) .*/\1/')-dev

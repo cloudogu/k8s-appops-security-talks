@@ -1,1 +1,0 @@
-# 3 Things Every Developer Should Know About K8s Security

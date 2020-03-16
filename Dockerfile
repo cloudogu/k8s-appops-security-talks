@@ -7,7 +7,6 @@ COPY . /dist/reveal
 RUN mv /dist/reveal/resources/ /dist
 
 FROM base
-ENV TITLE='3 things every developer should know about K8s security' \
-    THEME_CSS='css/cloudogu-black.css' \
-    ADDITIONAL_DEPENDENCIES="{ src: 'plugin/tagcloud/tagcloud.js' }"
+ENV TITLE='Good-Practices-for-Secure-Kubernetes-AppOps' \
+    THEME_CSS='css/cloudogu-black.css'
 COPY --from=aggregator --chown=nginx /dist /
