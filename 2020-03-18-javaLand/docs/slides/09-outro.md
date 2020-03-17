@@ -20,14 +20,14 @@ K8s AppOps security series on JavaSPEKTRUM 05/2019+
 
 See also 🌐 [cloudogu.com/blog/tag/k8s-security](https://cloudogu.com/blog/tag/k8s-security)
 
-<a href='https://twitter.com/jschnatterer' class="social" target="_blank">
-    <i class='fab fa-twitter'></i>
-    @jschnatterer
-</a>
-<br/>
 <a href='https://twitter.com/cloudogu' class="social" target="_blank">
     <i class='fab fa-twitter'></i>
     @cloudogu
+</a>
+<br/>
+<a href='https://twitter.com/jschnatterer' class="social" target="_blank">
+    <i class='fab fa-twitter'></i>
+    @jschnatterer
 </a>
 
 <br/>

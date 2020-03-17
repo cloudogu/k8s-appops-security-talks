@@ -31,7 +31,7 @@ Note:
 
 
 
-## SecCtx recommendations➡️PSP
+## Security Context Recommendations ➡ ️PSP
 
 ```yaml
 apiVersion: policy/v1beta1
@@ -123,6 +123,7 @@ Note:
 
 ## 🚧️ Security context pitfalls
 
+* Loose coupling in RBAC ➡️ fail late with typos
 * <font color="red">⚠</font> *Admission*Controller
   * only evaluates Pods before starting
   * if not active ➡️ PSP are ignored
@@ -130,7 +131,6 @@ Note:
 * Different PSP API group in `(Cluster)Role`
   * < 1.16: `apiGroups [ extensions ]` 
   * ≥ 1.16: `apiGroups [ policy ]`
-* Loose coupling in RBAC ➡️ fail late with typos
 
 Note:
 * apiGroups

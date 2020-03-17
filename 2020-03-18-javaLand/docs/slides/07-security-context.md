@@ -177,15 +177,15 @@ docker run --rm --cap-drop ALL --cap-add CAP_CHOWN <image>
 
 ### Run as unprivileged user
 
-*  Non-root verification only supports numeric user. 🙄  
- * `runAsUser: 100000` in `securityContext` of pod or 
- * `USER 100000` in `Dockerfile` of image.
 * Some official images run as root by default.  
   * Find a **trusted** image that does not run as root  
     e.g. for mongo or postgres:   
     <i class='fab fa-docker'></i> https://hub.docker.com/r/bitnami/
   * Derive from the original image and create your own non-root image  
     e.g. nginx: <i class='fab fa-github'></i> https://github.com/schnatterer/nginx-unpriv
+*  Non-root verification only supports numeric user. 🙄  
+ * `runAsUser: 100000` in `securityContext` of pod or 
+ * `USER 100000` in `Dockerfile` of image.
 
 
 
@@ -195,7 +195,7 @@ docker run --rm --cap-drop ALL --cap-add CAP_CHOWN <image>
 * Application requires user for UID in `/etc/passwd`  
   * New image that contains a user for UID e.g. `100000` or
   * Create `/etc/passwd` in init container and mount into app container
-* `runAsGroup` - beta from K8s 1.14. Before that defaults to GID 0 ☹  
+* `runAsGroup` - beta from K8s 1.14. Before defaults to GID 0 ☹  
    🌐 https://github.com/kubernetes/enhancements/issues/213
   
 Note:
