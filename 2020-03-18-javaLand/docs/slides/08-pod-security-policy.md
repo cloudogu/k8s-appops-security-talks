@@ -16,12 +16,12 @@
 * Same as Security Context 
 * Plus: Enforce secure defaults.  
   Block pods from 
-    * entering node's Linux namespaces (net, PID, etc.),
+    * entering node's Linux namespaces, e.g. net, PID   
       (includes binding ports to nodes directly),
-    * mounting arbirtrary host paths (from node)  
+    * mounting arbitrary host paths (from node)  
       (includes docker socket), 
-    * starting `privileged` containers.
-    * changing seecomp profile
+    * starting `privileged` containers,
+    * changing apparmor profile
 
 Note:
 * By default: All of this is possible when deploying pods!
@@ -31,7 +31,7 @@ Note:
 
 
 
-## Security Context
+## SecCtx recommendations➡️PSP
 
 ```yaml
 apiVersion: policy/v1beta1
@@ -106,11 +106,18 @@ Note:
    (also necessary for most managed k8s)  
 2. Define PSP (YAML)
 3. Activate via RBAC
-    * `Role` / `ClusteRole` that allows `use` of PSP
-    * `RoleBinding` / `ClusterRolebinding` for `ServiceAccount`s
 
 Example:   
 <i class='fab fa-github'></i> https://github.com/cloudogu/k8s-security-demos/blob/master/4-pod-security-policies/demo/01-psp-restrictive.yaml
+
+
+
+## Activation via RBAC
+
+<img data-src="images/psp-rbac.svg" />
+
+Note:
+* [plantUml src](https://www.plantuml.com/plantuml/uml/dL1DYzim4BtxLwZR7jg3OxfBbn2MPRk1d4DpxMKaJMrXMH8pKaDQ-jyxLa98avvsC1Y_ZyTxVk4CbClactSk65yi5l9go3dngki8zelUvQ7emaWcXemXBqoSkicPmQ7laeSmszknQAI06RdbH4xUtGISaJf2ZeKCTkFopBKbUD3eqRRtNvB92pTNQ7Xq8G71f5mGwmymg7utIhs26NkA9TXrz97K-_i7UB1sPY9Pf1Fw-V5nkRJDdyiW88hx6d9jtSYS4xQfzwzHLgOOPEyR6lm_N4vTnDuzVKYSdh-7RRGxD8LSFcoZT-Pmfu2LSDToYXv5_t7jo_ndsq_V1AZYcRbHwnljgmlMXVveqTS61Z7ia7uwWr-DaR6vAXbkUaTxx5rv-HA1F59PFRMrp4f1oKCazmjLOUbMqShgbTBIOuQqQfyb_WmmY6BE4pkpwqFpWi6MoVy5)
 
 
 
@@ -176,3 +183,9 @@ Note:
 
 
 ## 🗣️ Demo
+
+<img data-src="images/demo-psp.svg" width=35% />
+
+Note: 
+* [Demo Script](https://github.com/cloudogu/k8s-security-demos/blob/master/4-pod-security-policies/Readme.md)
+* [plantUml src](http://www.plantuml.com/plantuml/uml/dP11IyCm5CVl_HJFAkpK1JSSHMGC1xi8Ve6vGvOysz3q9RmaJf1zTzDIT3juCOSsxxtV_vUccn0bnzJRuiQGiabZOWjjZ3uy2i7oD6zCRDCn1MJbA2B5kNAzw8rg3LhXhQGXNdNfY4mOCLJ1iyblqSiGaGLZS8aLYgx-cLM9h3oYHLqj7hoASpDyGX4wGrwoxC5GZhvBXV1L03nBrJNi4kcjiuxXTh6KIws7YMEDF7NlLwkwriNvKYIPtMcKN4Ule7mZxmWf_kCqW9sZEFLsunha1JcDKBxK0ROs3J-YpF9C-soNJHwzoXv3hX1cFlXP2J80XGn1Ndjg37qQKcBSL8aycmzZiK5zk226VJuDBgvGFjrbt_gDybFyfaR_KFuDCuR8HiK97ii2Ca-XshT6QwH3jPuaryq9FXSR99rw-mq0)

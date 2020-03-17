@@ -4,7 +4,7 @@
 
 
 
-# K8s Security Built-ins
+# K8s built-in security mechanisms
 
 * Network Policies
 * Security Context
