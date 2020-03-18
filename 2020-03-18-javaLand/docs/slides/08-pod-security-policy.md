@@ -182,6 +182,30 @@ Note:
 
 
 
+### What if pod requires more privileges?
+
+<p class="fragment">
+"Whitelisting" via RBAC.
+<img data-src="images/psp-rbac.svg" />
+</p>
+
+<ol>
+<li class="fragment">Duplicate least privilege PSP</li>
+<li class="fragment">Grant required privilege in new PSP</li>
+<li class="fragment">Allow PSP via a Role (namespaced)</li>
+<li class="fragment">Create ServiceAccount</li>
+<li class="fragment">Create RoleBinding</li>
+<li class="fragment"> Assign ServiceAccount to Pod</li>
+</ol>
+<br/>
+<a class="fragment" href="https://github.com/cloudogu/k8s-security-demos/blob/master/4-pod-security-policies/demo/02a-psp-whitelist.yaml">
+<i class='fab fa-github'></i> https://github.com/cloudogu/k8s-security-demos/blob/master/4-pod-security-policies/demo/02a-psp-whitelist.yaml
+</a> 
+
+
+
+
+
 ## 🗣️ Demo
 
 <img data-src="images/demo-psp.svg" width=35% />

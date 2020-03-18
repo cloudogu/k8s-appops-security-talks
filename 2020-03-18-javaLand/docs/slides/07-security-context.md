@@ -93,7 +93,6 @@ Notes:
 * Starts container without read-write layer 
 * Writing only allowed in volumes
 * 🔥 Config or code within the container cannot be manipulated
-* Perk: More efficient (no CoW)
 
 
 
@@ -128,7 +127,7 @@ Can also cause unpredictable errors: e.g.
 ```bash
 curl --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt \
   -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \
-  https://${KUBERNETES_SERVICE_HOST}/api/v1/secrets
+  https://${KUBERNETES_SERVICE_HOST}/api/v1/
 ```
 * If not needed, disable!
 * No authentication possible
@@ -181,7 +180,8 @@ docker run --rm --cap-drop ALL --cap-add CAP_CHOWN <image>
   * Find a **trusted** image that does not run as root  
     e.g. for mongo or postgres:   
     <i class='fab fa-docker'></i> https://hub.docker.com/r/bitnami/
-  * Derive from the original image and create your own non-root image  
+  * Create your own non-root image  
+    (potentially basing on original image)  
     e.g. nginx: <i class='fab fa-github'></i> https://github.com/schnatterer/nginx-unpriv
 *  Non-root verification only supports numeric user. 🙄  
  * `runAsUser: 100000` in `securityContext` of pod or 
@@ -192,14 +192,17 @@ docker run --rm --cap-drop ALL --cap-add CAP_CHOWN <image>
 * UID 100000 might not have permissions. Solutions:
   * Init Container sets permissions for PVCs
   * Permissions in image ➡️ `chmod`/`chown` in `Dockerfile` 
+  * Run in root Group - `GID 0`  
+    🌐 https://docs.openshift.com/container-platform/4.3/openshift_images/create-images.html#images-create-guide-openshift_create-images
+
+Note:
+Some more (less likely to happen these days)
+* `runAsGroup` was alpha from 1.10, which is deactivated by default
 * Application requires user for UID in `/etc/passwd`  
   * New image that contains a user for UID e.g. `100000` or
   * Create `/etc/passwd` in init container and mount into app container
 * `runAsGroup` - beta from K8s 1.14. Before defaults to GID 0 ☹  
    🌐 https://github.com/kubernetes/enhancements/issues/213
-  
-Note:
-* `runAsGroup` was alpha from 1.10, which is deactivated by default
 
 
 
