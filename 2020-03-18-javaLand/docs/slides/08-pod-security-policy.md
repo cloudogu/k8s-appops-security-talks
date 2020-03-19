@@ -121,7 +121,7 @@ Note:
 
 
 
-## 🚧️ Security context pitfalls
+## 🚧️ PSP pitfalls
 
 * Loose coupling in RBAC ➡️ fail late with typos
 * <font color="red">⚠</font> *Admission*Controller
