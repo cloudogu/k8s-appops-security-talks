@@ -1,12 +1,11 @@
-# 3 things every developer should know about K8s security
+# Kubernetes appOps Security Talks
 
 [![Build Status](https://oss.cloudogu.com/jenkins/buildStatus/icon?job=cloudogu-github%2Fk8s-security-3-things%2Fmaster)](https://oss.cloudogu.com/jenkins/job/cloudogu-github/job/k8s-security-3-things/job/master/)
 
-Slides for the "3 things every developer should know about K8s security" talk by 
-[schnatterer](http://github.com/schnatterer/).
+Resources for some talks on the topic Kubernetes appOps Security by [schnatterer](http://github.com/schnatterer/).
 
 See
-* [slides](https://cloudogu.github.io/k8s-security-3-things)
+* [slides](https://cloudogu.github.io/k8s-appops-security-talks/)
 * [demos](https://github.com/cloudogu/k8s-security-demos)
 
 This presentation uses reveal.js.
