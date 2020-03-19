@@ -97,6 +97,7 @@ Note:
 * `privileged`: fails container start if value is changed explicitly. 
 * `allowedHostPaths` and `volumes` - blocks mounting arbitrary host paths (`/var/run/docker.sock`)
   Core type must be allowed explicitly.
+  downwardAPI allows for mounting K8s API object into the container, e.g. annotations or labels. See [here](https://kubernetes.io/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/).
 
 
 
