@@ -24,7 +24,7 @@ body {
 
 .reveal {
   font-family: "Exo", "Droid Sans", sans-serif;
-  font-size: 31px;
+  font-size: 20px;
   font-weight: normal;
   color: white; }
 
@@ -62,7 +62,7 @@ body {
   word-wrap: break-word; }
 
 .reveal h1 {
-  font-size: 2.5em; }
+  font-size: 2.0em; }
 
 .reveal h2 {
   font-size: 1.6em; }
