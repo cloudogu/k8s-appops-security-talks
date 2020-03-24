@@ -15,7 +15,7 @@ Johannes Schnatterer
 
 
 <div class="title-version">
-Version: 202003191825-5876ae2
+Version: 202003241651-b78098b
 </div>
 
 <h3><a href="Good-Practices-for-Secure-Kubernetes-AppOps.pdf">
