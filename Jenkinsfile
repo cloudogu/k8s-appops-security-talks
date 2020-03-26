@@ -1,6 +1,5 @@
 #!groovy
 
-//Keep this version in sync with the one used in Maven.pom-->
 @Library('github.com/cloudogu/ces-build-lib@1.35.1')
 import com.cloudogu.ces.cesbuildlib.*
 
@@ -43,7 +42,6 @@ node('docker') {
         def image
         
         stage('Build') {
-            sh "docker pull cloudogu/reveal.js"
             writeVersionNameToIntroSlide(versionName, introSlidePath)
             image = docker.build imageName
         }
