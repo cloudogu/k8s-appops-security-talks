@@ -11,5 +11,5 @@ docker run --rm \
     -v $(pwd)/images:/reveal/images \
     -v $(pwd)/2020-03-18-javaLand:/reveal/2020-03-18-javaLand \
     -p 8000:8000 -p 35729:35729 \
-    cloudogu/reveal.js:3.9.2-r3-dev
+    cloudogu/reveal.js:3.9.2-r7-dev
 ```
