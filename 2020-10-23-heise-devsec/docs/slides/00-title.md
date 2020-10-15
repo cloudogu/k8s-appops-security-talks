@@ -3,7 +3,6 @@
 
 <img data-src="images/k8s_logo.svg" class="centered" width=15%/>
 
-
 <h2>
     <span class="title-accent">//</span> 
     Secure by Default?<br/>Pragmatically Improve App Security Using K8s Built-Ins
@@ -15,7 +14,7 @@ Johannes Schnatterer
 
 
 <div class="title-version">
-Version: 202010151525-c9b8839
+Version: 202010151729-989e261
 </div>
 
 <h3><a href="Secure-by-Default-Pragmatically-Improve-App-Security-Using-K8s-Built-Ins.pdf">
