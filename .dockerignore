@@ -1,6 +1,6 @@
 # Ignore all
 **
-# Whitelist
+# Allow list
 !docs
 !images
 !resources

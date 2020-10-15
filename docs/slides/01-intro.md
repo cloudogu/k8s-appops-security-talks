@@ -1,9 +1,3 @@
-# Outline
-
-## How to improve application security using Kubernetes security built-ins *pragmatically*
-
-
-
 # K8s built-in security mechanisms
 
 * Network Policies

@@ -3,7 +3,6 @@
 
 <img data-src="images/k8s_logo.svg" class="centered" width=15%/>
 
-
 <h2>
     <span class="title-accent">//</span> 
     Secure by Default?<br/>Pragmatically Improve App Security Using K8s Built-Ins
