@@ -1,6 +1,6 @@
 #!groovy
 
-@Library('github.com/cloudogu/ces-build-lib@1.35.1')
+@Library('github.com/cloudogu/ces-build-lib@1.44.3')
 import com.cloudogu.ces.cesbuildlib.*
 
 node('docker') {
@@ -18,14 +18,16 @@ node('docker') {
             ])
     ])
 
-    String conferenceName = '2020-03-18-javaLand'
-    pdfBaseName = 'Good-Practices-for-Secure-Kubernetes-AppOps'
-    String imageBaseName = 'cloudogu/k8s-security-3-things'
+    String conferenceName = '2020-10-23-heise-devsec'
+    pdfBaseName = 'Secure-by-Default-Pragmatically-Improve-App-Security-Using-K8s-Built-Ins'
+    String imageBaseName = 'cloudogu/k8s-appops-security-talks'
     
     def introSlidePath = 'docs/slides/00-title.md'
-    headlessChromeVersion = 'yukinying/chrome-headless-browser:82.0.4068.4'
+    headlessChromeVersion = 'yukinying/chrome-headless-browser:87.0.4280.11'
 
     Git git = new Git(this, 'cesmarvin')
+    git.committerName = 'cesmarvin'
+    git.committerEmail = 'cesmarvin@cloudogu.com'
     
     catchError {
 

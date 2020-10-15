@@ -1,7 +1,6 @@
-FROM cloudogu/reveal.js:3.9.2-r5 as base
-
+FROM cloudogu/reveal.js:3.9.2-r9 as base
 FROM base as aggregator
-ENV TITLE='Good-Practices-for-Secure-Kubernetes-AppOps' \
+ENV TITLE='Secure by Default? - Pragmatically Improve App Security Using K8s Built-Ins' \
     THEME_CSS='css/cloudogu-black.css'
 USER root
 COPY . /reveal
