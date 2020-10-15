@@ -6,7 +6,7 @@
 
 <h2>
     <span class="title-accent">//</span> 
-    Good Practices for Secure Kubernetes AppOps
+    Secure by Default?<br/>Pragmatically Improve App Security Using K8s Built-Ins
 </h2>
 <br/>
 Johannes Schnatterer
@@ -15,9 +15,9 @@ Johannes Schnatterer
 
 
 <div class="title-version">
-Version: 202010151457-1469d84
+Version: 202010151525-c9b8839
 </div>
 
-<h3><a href="Good-Practices-for-Secure-Kubernetes-AppOps.pdf">
+<h3><a href="Secure-by-Default-Pragmatically-Improve-App-Security-Using-K8s-Built-Ins.pdf">
    <i class="far fa-file-pdf"></i>
 </a></h3>
