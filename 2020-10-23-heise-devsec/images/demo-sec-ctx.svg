@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" contentScriptType="application/ecmascript" contentStyleType="text/css"
+     height="291px" preserveAspectRatio="none" style="width:425px;height:291px;" version="1.1" viewBox="0 0 425 291"
+     width="425px" zoomAndPan="magnify"><defs><filter height="300%" id="f8a3dz4uha8ma" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[cfdc3dc70d15b6da7ea663be8db6665b]
+cluster K8s Cluster--><polygon fill="#FFFFFF" filter="url(#f8a3dz4uha8ma)" points="22,34,32,24,403,24,403,269,393,279,22,279,22,34" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="393" x2="402" y1="34" y2="25"/><line style="stroke: #000000; stroke-width: 1.5;" x1="22" x2="393" y1="34" y2="34"/><line style="stroke: #000000; stroke-width: 1.5;" x1="393" x2="393" y1="34" y2="279"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="92" x="162.5" y="49.9951">K8s Cluster</text><!--MD5=[0799c834e94050881bd208027e30e5a7]
+cluster Namespace 'sec-ctx'--><polygon fill="#FFFFFF" filter="url(#f8a3dz4uha8ma)" points="46,72,214,72,221,94.2969,379,94.2969,379,255,46,255,46,72" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="46" x2="221" y1="94.2969" y2="94.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="162" x="50" y="86.9951">Namespace 'sec-ctx'</text><!--MD5=[8824c66cba45be527cf3dd56bcd70cd2]
+entity nginx--><rect fill="#23A3DD" filter="url(#f8a3dz4uha8ma)" height="36.2969" style="stroke: #16688D; stroke-width: 1.5;" width="57" x="62.5" y="107"/><rect fill="#23A3DD" height="5" style="stroke: #16688D; stroke-width: 1.5;" width="10" x="57.5" y="112"/><rect fill="#23A3DD" height="5" style="stroke: #16688D; stroke-width: 1.5;" width="10" x="57.5" y="133.2969"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="37" x="72.5" y="129.9951">nginx</text><!--MD5=[886dec6c5b7fa8a268231cb2a894d854]
+entity nginxinc/nginx-unprivileged--><rect fill="#23A3DD" filter="url(#f8a3dz4uha8ma)" height="36.2969" style="stroke: #16688D; stroke-width: 1.5;" width="208" x="155" y="107"/><rect fill="#23A3DD" height="5" style="stroke: #16688D; stroke-width: 1.5;" width="10" x="150" y="112"/><rect fill="#23A3DD" height="5" style="stroke: #16688D; stroke-width: 1.5;" width="10" x="150" y="133.2969"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="188" x="165" y="129.9951">nginxinc/nginx-unprivileged</text><!--MD5=[9b16196307162066c2e63db387584b10]
+entity docker-sudo--><rect fill="#23A3DD" filter="url(#f8a3dz4uha8ma)" height="36.2969" style="stroke: #16688D; stroke-width: 1.5;" width="108" x="62" y="203"/><rect fill="#23A3DD" height="5" style="stroke: #16688D; stroke-width: 1.5;" width="10" x="57" y="208"/><rect fill="#23A3DD" height="5" style="stroke: #16688D; stroke-width: 1.5;" width="10" x="57" y="229.2969"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="88" x="72" y="225.9951">docker-sudo</text><!--MD5=[956565dd5a9d107708a6cabf297d2746]
+link nginx to nginxinc/nginx-unprivileged--><!--MD5=[74597b23c462253e8991236c9bb2cabe]
+link nginx to docker-sudo--><!--MD5=[fe41aef446c783b0e18ccf5c789d7bb1]
+@startuml
+skinparam interface {
+  BackgroundColor #23a3dd
+  BorderColor #16688d
+}
+
+skinparam arrow {
+  Color #23a3dd
+}
+
+skinparam component {
+  BackgroundColor #23a3dd
+  BorderColor #16688d
+  FontColor #FFFFFF
+}
+
+
+node "K8s Cluster" {
+
+  package "Namespace 'sec-ctx'"  {
+    [nginx]
+    [nginxinc/nginx-unprivileged]
+    [docker-sudo]
+  }
+
+}
+@enduml
+
+PlantUML version 1.2020.02(Sun Mar 01 10:22:07 UTC 2020)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Java Version: 1.7.0_25-b15
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>
