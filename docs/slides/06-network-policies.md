@@ -45,12 +45,15 @@ Don't forget to:
 
 * Allow external access to ingress controller  
 * Allow access to DNS from every namespace   
+* Allow DNS egress to the outside (if needed)  
 
 Note:
 * Allow external access to ingress controller  
   (otherwise no more external access on any cluster resource)  
-* Allow access to kube-dns/core-dns to every namespace   
+* Allow access to kube-dns/core-dns to every namespace  
   (otherwise no more service discovery by name)
+* Allow DNS egress to the outside (if needed)  
+  (otherwise no resolution of external names)
 
 
 
@@ -71,6 +74,7 @@ Note:
 * Allow monitoring tools (e.g. Prometheus)
 * Restart might be necessary (e.g. Prometheus)
 * No labels on namespaces by default
+* Allowing egress to API server difficult
 * Policies might not be supported by CNI Plugin.  
   ➡️ Testing!    
   🌐 https://www.inovex.de/blog/test-kubernetes-network-policies/
@@ -93,7 +97,7 @@ kubectl label namespace/kube-system namespace=kube-system
 
 * Proprietary extensions of CNI Plugin (e.g. cilium or calico)
 * Service Meshes: similar features, also work with multiple clusters  
-  ➡️ different strengths, support each other  
+  ➡️ different strengths, support each other (ISO/OSI Layer 7 vs 3/4)  
   🌐 https://istio.io/blog/2017/0.1-using-network-policy/
 
 Note: 
@@ -119,12 +123,13 @@ Possible solutions:
 * [web-console](http://web-console/)
 
 Note:
-* curl --output /tmp/mongo.tgz https://downloads.mongodb.org/linux/mongodb-shell-linux-x86_64-3.4.18.tgz && tar xf /tmp/mongo.tgz -C /tmp
-* /tmp/mongodb-linux-x86_64-3.4.18/bin/mongo users --host mongodb.production.svc.cluster.local --eval 'db.users.find().pretty()'  
--- Limited time: Only show allowing of ingress 
-➡️ Offtopic: MongoDB recommendation ➡️ not `mongo` image but `bitnami/mongo` (helm chart)
+* curl https://fastdl.mongodb.org/linux/mongodb-shell-linux-x86_64-debian92-4.4.1.tgz | tar zxv -C /tmp
+* mv /tmp/mongo*/bin/mongo /tmp/
+* /tmp/mongo users --host mongodb.production.svc.cluster.local --eval 'db.users.find().pretty()'
+-- Limited time: Only show allowing of ingress (until `3-ingress-production-allow-nosqlclient-mongo.yaml`)
 * [Demo Script](https://github.com/cloudogu/k8s-security-demos/blob/master/2-network-policies/Readme.md) 
 * [plantUml src](https://www.plantuml.com/plantuml/uml/dL1BQzj04BxhLspLGawoP9icGfGG70Y5Xf23eOVMXzNks5wqcjdk0rEA_tjtPRKMwGCJNRGptsE-cJldkVMXrzaRXK872S5gjlVUkAOiBJ_CTihlGniSM47e0VrCK5_sIkmLwD9eZabUTA45Y-315SvO5Vzbpvq7Mrfm5Ao0igj_OqL0pLlG88l5UoFyJAK8cUiK6cvvpnH6wPOBO3yonbPST3jB0UKzQRBixMB9br8cXAm4EtRdrzTrBRFZr8XRIuV1P2fzGOeR6K90_uffZ3qG-h7tC7p9F3jla7zShvzpnXrxN6KPaeojJxLZzpga0-LnQ7GnSIhVHUY9z-1C4bwbenRkUsJrLud6ulTbRJbiLRT9XlbOv2VeSRLXHN5xvcHiibl-uHs2DwHll-8J-6VIRaY5PXvvnt-5aB3bGVjpWC_GncEY8msR5v66uLESDUm0RI5EPLDN5oPQ_2-HiII3y8emXRhGSNcAYkI-QQ5L9Fyr_1IFuITbiwogwW-JKTOJxaYsIJ8-c_BNOt5JpM-6VOxP7Q0ClVu9)
+➡️ Offtopic: MongoDB recommendation ➡️ not `mongo` image but `bitnami/mongo` (helm chart)
 
 
 

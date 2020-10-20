@@ -26,8 +26,8 @@ spec:
       runAsNonRoot: true
       runAsUser: 100000
       runAsGroup: 100000
-      readOnlyRootFilesystem: true
       allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
       seccompProfile: # k8s >= 1.19
         type: RuntimeDefault
       capabilities:
@@ -169,7 +169,7 @@ docker run --rm --cap-drop ALL <image>
 docker run --rm --cap-drop ALL --cap-add CAP_CHOWN <image>
 # Keep adding caps until no more error
 ```
-* Add necessary caps to k8s resource
+* Add necessary caps to k8s `securityContext`
 * Alternative: Find image with same app that does not require caps, e.g. `nginxinc/nginx-unprivileged`  
 
 
@@ -183,14 +183,11 @@ docker run --rm --cap-drop ALL --cap-add CAP_CHOWN <image>
   * Create your own non-root image  
     (potentially basing on original image)  
     e.g. nginx: <i class='fab fa-github'></i> https://github.com/schnatterer/nginx-unpriv
-*  Non-root verification only supports numeric user. 🙄  
- * `runAsUser: 100000` in `securityContext` of pod or 
- * `USER 100000` in `Dockerfile` of image.
 
 
 
 * UID 100000 might not have permissions. Solutions:
-  * Init Container sets permissions for PVCs
+  * Init Container sets permissions for volume
   * Permissions in image ➡️ `chmod`/`chown` in `Dockerfile` 
   * Run in root Group - `GID 0`  
     🌐 https://docs.openshift.com/container-platform/4.3/openshift_images/create-images.html#images-create-guide-openshift_create-images
@@ -203,25 +200,6 @@ Some more (less likely to happen these days)
   * Create `/etc/passwd` in init container and mount into app container
 * `runAsGroup` - beta from K8s 1.14. Before defaults to GID 0 ☹  
    🌐 https://github.com/kubernetes/enhancements/issues/213
-
-
-
-## Tools
-
-Find out if your cluster adheres to these and other good security practices:  
-
-* <i class='fab fa-github'></i> [controlplaneio/kubesec](https://github.com/controlplaneio/kubesec) - managable amount of checks
-* <i class='fab fa-github'></i> [Shopify/kubeaudit](https://github.com/Shopify/kubeaudit) 
-  * a whole lot of checks,
-  * even deny all ingress and egress NetPols and AppArmor Annotations
-
-➡️ Be prepared for a lot of findings  
-➡️ Create your own good practices
-
-Note:
-➡️ Results differ between tools.   
-➡️ The checks are opinionated, just like the recommendations show here.  
-➡️ Scrutinize, prioritize and be pragmatic when fixing.
 
 
 
