@@ -186,7 +186,7 @@ docker run --rm --cap-drop ALL --cap-add CAP_CHOWN <image>
 
 
 
-* UID 100000 might not have permissions. Solutions:
+* UID 100000 lacks file permissions. Solutions:
   * Init Container sets permissions for volume
   * Permissions in image ➡️ `chmod`/`chown` in `Dockerfile` 
   * Run in root Group - `GID 0`  
