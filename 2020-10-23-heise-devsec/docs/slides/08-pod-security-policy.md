@@ -3,10 +3,10 @@
 
 
 
-* enforces security context cluster-wide   
+* enforces security context settings cluster-wide   
 * additional options enforcing secure defaults
 * more effort than security context and different syntax 🙄   
-* Future from K8s 1.22 vague 😟  
+* future from K8s 1.22 vague 😟  
  <i class='fab fa-github'></i> https://github.com/kubernetes/enhancements/issues/5
 
 ➡️ Still only built-in solution for cluster-wide security settings 
