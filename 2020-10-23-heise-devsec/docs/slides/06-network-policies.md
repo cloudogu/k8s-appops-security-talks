@@ -45,12 +45,15 @@ Don't forget to:
 
 * Allow external access to ingress controller  
 * Allow access to DNS from every namespace   
+* Allow DNS egress to the outside (if needed)  
 
 Note:
 * Allow external access to ingress controller  
   (otherwise no more external access on any cluster resource)  
-* Allow access to kube-dns/core-dns to every namespace   
+* Allow access to kube-dns/core-dns to every namespace  
   (otherwise no more service discovery by name)
+* Allow DNS egress to the outside (if needed)  
+  (otherwise no resolution of external names)
 
 
 
