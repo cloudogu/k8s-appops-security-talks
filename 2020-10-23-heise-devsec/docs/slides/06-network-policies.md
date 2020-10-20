@@ -28,24 +28,40 @@ kubectl describe netpol <name>
 
 
 
-## Recommendation: Allow selected ingress traffic only
+## Recommendation: Restrict ingress traffic
 
-In every namespace except `kube-system`:
+In all application namespaces (not `kube-system`, operators, etc.):
  
 * Deny ingress between pods,
 * then allow specific routes only.
 
 
 
-## Advanced: ingress to `kube-system`
+## Advanced: Restrict egress to the outside
+
+* Verbose solution: 
+  * Deny egress between pods,
+  * then allow specific routes,
+  * repeating all ingress rules. 🙄
+* More pragmatic solution:
+  * Allow only egress within the cluster,
+  * then allow specific pods that need access to internet.
+
+<font color="red">⚠</font> egress target IP addresses might be difficult to maintain
+
+
+
+
+## Advanced: Restrict `kube-system` / operator traffic
 
 <font color="red">⚠</font> Might stop the apps in your cluster from working
 
 Don't forget to:
 
-* Allow external access to ingress controller  
+* Allow external ingress to ingress controller  
 * Allow access to DNS from every namespace   
 * Allow DNS egress to the outside (if needed)  
+* Allow operators egress (Backup, LetsEncrypt, external-dns, Monitoring, Logging, GitOps-Repo, Helm Repos, etc.)
 
 Note:
 * Allow external access to ingress controller  
@@ -57,24 +73,13 @@ Note:
 
 
 
-## Advanced: egress
-
-* Verbose solution: 
-  * Deny egress between pods,
-  * then allow specific routes,
-  * repeating all ingress rules. 🙄
-* More pragmatic solution:
-  * Allow only egress within the cluster,
-  * then allow specific pods that need access to internet.
-
-
-
-## 🚧️Net pol pitfalls
+## 🚧️ Net pol pitfalls
 
 * Allow monitoring tools (e.g. Prometheus)
 * Restart might be necessary (e.g. Prometheus)
 * No labels on namespaces by default
-* Allowing egress to API server difficult
+* Allowing egress to API server difficult  
+  <i class="fab fa-stack-overflow"></i> https://stackoverflow.com/a/56494510/
 * Policies might not be supported by CNI Plugin.  
   ➡️ Testing!    
   🌐 https://www.inovex.de/blog/test-kubernetes-network-policies/
@@ -137,7 +142,7 @@ Note:
 
 My recommendations:
 
-* In non-`kube-system` namespaces: allow selected ingress traffic only.
+* In all application namespaces: allow selected ingress traffic only.
 * Use with care
-  * limiting ingress traffic in `kube-system`
-  * `egress` limiting for cluster-external traffic 
+  * restricting `egress` for cluster-external traffic 
+  * restrict traffic in `kube-system` and for operators
