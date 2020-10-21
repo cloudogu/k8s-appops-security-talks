@@ -142,7 +142,7 @@ Note:
 
 My recommendations:
 
-* In all application namespaces: allow selected ingress traffic only.
+* In all application namespaces: restrict ingress traffic
 * Use with care
   * restricting `egress` for cluster-external traffic 
   * restrict traffic in `kube-system` and for operators
