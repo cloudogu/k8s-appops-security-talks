@@ -83,8 +83,14 @@ Notes:
 
 ### No Privilege escalation
 
+<img data-src="images/sandwich.png" width=30% class="floatRight"/>
+
 * Container can't increase privileges
 * 🔥 E.g. `sudo`, `setuid`, Kernel vulnerabilities
+<br/>
+<br/>
+<br/>
+<font size="1" style="text-align: right;" class="floatRight">🌐 https://xkcd.com/149/</font>
 
 
 
