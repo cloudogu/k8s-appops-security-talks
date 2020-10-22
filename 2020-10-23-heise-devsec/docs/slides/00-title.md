@@ -20,7 +20,7 @@ Johannes Schnatterer
 </p>
 
 <div class="title-version">
-Version: 202010221124-55689e1
+Version: 202010221156-b7d1e45
 </div>
 
 <p class="state-background" style="font-size: 0.9em">

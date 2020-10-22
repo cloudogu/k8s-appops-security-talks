@@ -87,25 +87,35 @@ Notes:
 
 * Container can't increase privileges
 * 🔥 E.g. `sudo`, `setuid`, Kernel vulnerabilities
+
 <br/>
 <br/>
 <br/>
-<font size="1" style="text-align: right;" class="floatRight">🌐 https://xkcd.com/149/</font>
+<br/>
+<br/>
+<font size="1" style="text-align: right;" class="floatRight">🌐 <a href="https://xkcd.com/149/">https://xkcd.com/149/</a></font>
 
 
 
 ### Read-only root file system
 
+<img data-src="images/container-layers.jpg" width=30% class="floatRight"/>
+
 * Starts container without read-write layer 
 * Writing only allowed in volumes
-* 🔥 Config or code within the container cannot be manipulated
+* 🔥 Config or code within the container cannot   
+  be manipulated
+
+<br/>
+<br/>
+<font size="1" style="text-align: right;" class="floatRight">🌐 <a href="https://docs.docker.com/storage/storagedriver">https://docs.docker.com/storage/storagedriver</a></font>
 
 
 
 ### Drop Capabilities
   
 * Drops even the default caps:  
-  🌐 https://github.com/moby/moby/blob/3152f94/oci/caps/defaults.go
+  🌐 https://github.com/moby/moby/blob/v19.03.13/oci/defaults.go
 * 🔥 E.g. Mitigates `CapNetRaw` attack - DNS Spoofing on Kubernetes Clusters  
   🌐 https://blog.aquasec.com/dns-spoofing-kubernetes-clusters
 
@@ -123,7 +133,6 @@ Can also cause unpredictable errors: e.g.
 * Is picked up by e.g. [keycloak](https://github.com/keycloak/keycloak-containers/blob/master/server/README.md) container.
   Even it not planned!
   Another example - docker/registry?
-  
 
 
 
