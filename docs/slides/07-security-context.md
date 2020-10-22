@@ -50,7 +50,7 @@ There is also a securityContext on pod level, but not all of those settings cann
 ### Enable seccomp
  
 * Enables e.g. docker's seccomp default profile that block 44/~300 Syscalls 
-* 🔥Has mitigated Kernel vulns in past and might in future 🔮   
+* 🔥 Has mitigated Kernel vulns in past and might in future 🔮   
   🌐 https://docs.docker.com/engine/security/non-events/
 * See also k8s security audit:  
   🌐 https://www.cncf.io/blog/2019/08/06/open-sourcing-the-kubernetes-security-audit/
@@ -83,8 +83,14 @@ Notes:
 
 ### No Privilege escalation
 
+<img data-src="images/sandwich.png" width=30% class="floatRight"/>
+
 * Container can't increase privileges
 * 🔥 E.g. `sudo`, `setuid`, Kernel vulnerabilities
+<br/>
+<br/>
+<br/>
+<font size="1" style="text-align: right;" class="floatRight">🌐 https://xkcd.com/149/</font>
 
 
 
