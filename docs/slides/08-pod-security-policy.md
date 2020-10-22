@@ -18,7 +18,12 @@
 
 <a href="https://github.com/cloudogu/k8s-security-demos/blob/master/4-pod-security-policies/demo/01-psp-restrictive.yaml"><img data-src="images/psp.png" width="80%" style="filter: blur(2px);-webkit-filter: blur(2px);"/></a>
 
-<i class='fab fa-github'></i> https://github.com/cloudogu/k8s-security-demos/blob/master/4-pod-security-policies/demo/01-psp-restrictive.yaml
+<i class='fab fa-github'></i> https://github.com/cloudogu/k8s-security-demos/blob/master/4-pod-security-policies/demo/01-psp-restrictive.yaml 
+
+<i class='fab fa-github'></i> https://github.com/sysdiglabs/kube-psp-advisor
+
+Note:
+* kube-psp-advisor: Tool that helps to create PSPs in existing cluster 
 
 
 
