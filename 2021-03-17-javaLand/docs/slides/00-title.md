@@ -5,7 +5,7 @@
 <img data-src="images/k8s_logo.svg" class="centered" width=15%/>
 <h2 class="title">
     <span class="title-accent">//</span> 
-    Secure by Default?<br/>Pragmatically Improve App Security Using K8s Built-Ins
+    Good Practices for Secure Kubernetes AppOps
 </h2>
 <br/>
 Johannes Schnatterer
@@ -20,7 +20,7 @@ Johannes Schnatterer
 </p>
 
 <div class="title-version">
-Version: 202103091047-8604ed4
+Version: 202103091057-439a5a4
 </div>
 
 <p class="state-background" style="font-size: 0.9em">
