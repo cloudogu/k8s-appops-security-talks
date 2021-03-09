@@ -18,8 +18,8 @@ node('docker') {
             ])
     ])
 
-    String conferenceName = '2020-10-23-heise-devsec'
-    pdfBaseName = 'Secure-by-Default-Pragmatically-Improve-App-Security-Using-K8s-Built-Ins'
+    String conferenceName = '2021-03-17-javaLand'
+    pdfBaseName = 'Good-Practices-for-Secure-Kubernetes-AppOps'
     String imageBaseName = 'cloudogu/k8s-appops-security-talks'
     
     def introSlidePath = 'docs/slides/00-title.md'
@@ -60,7 +60,7 @@ node('docker') {
 
         stage('Deploy GH Pages') {
             
-            if (env.BRANCH_NAME == 'master') {
+            if (env.BRANCH_NAME == 'main') {
                 git.pushGitHubPagesBranch(packagePath, versionName, conferenceName)
             } else {
                 echo "Skipping deploy to GH pages, because not on master branch"

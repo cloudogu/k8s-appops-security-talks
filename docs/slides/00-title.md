@@ -5,7 +5,7 @@
 <img data-src="images/k8s_logo.svg" class="centered" width=15%/>
 <h2 class="title">
     <span class="title-accent">//</span> 
-    Secure by Default?<br/>Pragmatically Improve App Security Using K8s Built-Ins
+    Good Practices for Secure Kubernetes AppOps
 </h2>
 <br/>
 Johannes Schnatterer
