@@ -2,7 +2,7 @@
 
 * Network Policies
 * Security Context
-* Pod Security Policies
+* ~~Pod Security Policies~~
 
 
 
