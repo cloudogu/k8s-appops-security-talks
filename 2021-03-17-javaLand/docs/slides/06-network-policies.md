@@ -118,8 +118,7 @@ Possible solutions:
   ➡️ different strengths, support each other  
   🌐 https://istio.io/blog/2017/0.1-using-network-policy/
 
-Note:
-More interesting tools, but none of them are quick wins
+Additional interesting tools, but none of them seem quick wins
 
 * [DNS NetworkPolicy controller for Kubernetes](https://github.com/chris-free/networkpolicy-dns) - very simple works only 
   for one pod selector
@@ -128,7 +127,8 @@ More interesting tools, but none of them are quick wins
   Unfortunately difficult to build and no longer maintained.
 * [Introducing kube-iptables-tailer: Better Networking Visibility in Kubernetes Clusters - Kubernetes](https://kubernetes.io/blog/2019/04/19/introducing-kube-iptables-tailer/)
   At least on GKE it's difficult to find out if and where dropped IPTables packages are logged :-/
-  
+
+
 
 ## 🗣️ Demo
 
