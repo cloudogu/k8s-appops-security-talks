@@ -49,6 +49,15 @@ There is also a securityContext on pod level, but not all of those settings cann
 
 ### Enable seccomp
  
+
+```yaml
+  annotations: 
+    seccomp.security.alpha.kubernetes.io/pod: runtime/default # k8s <= 1.18
+# ...
+    securityContext:
+      seccompProfile: # k8s >= 1.19
+        type: RuntimeDefault
+```
 * Enables e.g. docker's seccomp default profile that block 44/~300 Syscalls 
 * 🔥 Has mitigated Kernel vulns in past and might in future 🔮   
   🌐 https://docs.docker.com/engine/security/non-events/
@@ -81,7 +90,41 @@ Notes:
 
 
 
+### 🚧️ Run as unprivileged user pitfalls
+
+* Some official images run as root by default.
+  * Find a **trusted** image that does not run as root  
+    e.g. for mongo or postgres:   
+    <i class='fab fa-docker'></i> https://hub.docker.com/r/bitnami/
+  * Create your own non-root image  
+    (potentially basing on original image)  
+    e.g. nginx: <i class='fab fa-github'></i> https://github.com/schnatterer/nginx-unpriv
+
+
+
+* UID 100000 lacks file permissions. Solutions:
+  * Init Container sets permissions for volume
+  * Permissions in image ➡️ `chmod`/`chown` in `Dockerfile`
+  * Run in root Group - `GID 0`  
+    🌐 https://docs.openshift.com/container-platform/4.3/openshift_images/create-images.html#images-create-guide-openshift_create-images
+
+Note:
+Some more (less likely to happen these days)
+* `runAsGroup` was alpha from 1.10, which is deactivated by default
+* Application requires user for UID in `/etc/passwd`
+  * New image that contains a user for UID e.g. `100000` or
+  * Create `/etc/passwd` in init container and mount into app container
+* `runAsGroup` - beta from K8s 1.14. Before defaults to GID 0 ☹  
+  🌐 https://github.com/kubernetes/enhancements/issues/213
+
+
+
 ### No Privilege escalation
+
+
+```yaml
+      allowPrivilegeEscalation: false
+```
 
 <img data-src="images/sandwich.png" width=30% class="floatRight"/>
 
@@ -99,6 +142,10 @@ Notes:
 
 ### Read-only root file system
 
+```yaml
+      readOnlyRootFilesystem: true
+```
+
 <img data-src="images/container-layers.jpg" width=30% class="floatRight"/>
 
 * Starts container without read-write layer 
@@ -112,51 +159,7 @@ Notes:
 
 
 
-### Drop Capabilities
-  
-* Drops even the default caps:  
-  🌐 https://github.com/moby/moby/blob/v19.03.13/oci/defaults.go
-* 🔥 E.g. Mitigates `CapNetRaw` attack - DNS Spoofing on Kubernetes Clusters  
-  🌐 https://blog.aquasec.com/dns-spoofing-kubernetes-clusters
-
-
-
-### Bonus: No Services in Environment
-
-* By default: Each K8s service written to each container's env vars  
-  ➡️ Docker Link legacy, no longer needed
-* 🔥 But convenient info for attacker where to go next
-
-Note:
-Can also cause unpredictable errors: e.g. 
-* service `POSTGRES` -> env `POSTGRES_PORT` mounted into every port in Namespace.
-* Is picked up by e.g. [keycloak](https://github.com/keycloak/keycloak-containers/blob/master/server/README.md) container.
-  Even it not planned!
-  Another example - docker/registry?
-
-
-
-### Bonus: Disable access to K8s API
-
-* SA Token in every pod for api-server authn 
-```bash
-curl --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt \
-  -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \
-  https://${KUBERNETES_SERVICE_HOST}/api/v1/
-```
-* If not needed, disable!
-* No authentication possible
-* 🔥 Lesser risk of security misconfig or vulns in authz  
-  <!-- These blanks disable the horizontal scroll bar in the listing above :-( -->
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-
-
-## 🚧️ Security context pitfalls
-
-
-
-### Read-only root file system
+### 🚧️ Read-only root file system pitfalls
 
 Application might need temp folder to write to
 
@@ -173,6 +176,18 @@ docker diff <containerName>
 
 
 ### Drop Capabilities
+```yaml
+      capabilities:
+        drop: [ 'ALL' ]
+```
+* Drops even the default caps:  
+  🌐 https://github.com/moby/moby/blob/v20.10.5/oci/caps/defaults.go
+* 🔥 E.g. Mitigates `CapNetRaw` attack - DNS Spoofing on Kubernetes Clusters  
+  🌐 https://blog.aquasec.com/dns-spoofing-kubernetes-clusters
+
+
+
+### 🚧 Drop Capabilities pitfalls
 
 Some images require capabilities
 
@@ -185,36 +200,46 @@ docker run --rm --cap-drop ALL --cap-add CAP_CHOWN <image>
 # Keep adding caps until no more error
 ```
 * Add necessary caps to k8s `securityContext`
-* Alternative: Find image with same app that does not require caps, e.g. `nginxinc/nginx-unprivileged`  
+* Alternative: Find image with same app that does not require caps, e.g. `nginxinc/nginx-unprivileged`
 
 
 
-### Run as unprivileged user
+### Bonus: No Services in Environment
 
-* Some official images run as root by default.  
-  * Find a **trusted** image that does not run as root  
-    e.g. for mongo or postgres:   
-    <i class='fab fa-docker'></i> https://hub.docker.com/r/bitnami/
-  * Create your own non-root image  
-    (potentially basing on original image)  
-    e.g. nginx: <i class='fab fa-github'></i> https://github.com/schnatterer/nginx-unpriv
+```yaml
+  enableServiceLinks: false
+```
 
-
-
-* UID 100000 lacks file permissions. Solutions:
-  * Init Container sets permissions for volume
-  * Permissions in image ➡️ `chmod`/`chown` in `Dockerfile` 
-  * Run in root Group - `GID 0`  
-    🌐 https://docs.openshift.com/container-platform/4.3/openshift_images/create-images.html#images-create-guide-openshift_create-images
+* By default: Each K8s service written to each container's env vars  
+  ➡️ Docker Link legacy, no longer needed
+* 🔥 But convenient info for attacker where to go next
 
 Note:
-Some more (less likely to happen these days)
-* `runAsGroup` was alpha from 1.10, which is deactivated by default
-* Application requires user for UID in `/etc/passwd`  
-  * New image that contains a user for UID e.g. `100000` or
-  * Create `/etc/passwd` in init container and mount into app container
-* `runAsGroup` - beta from K8s 1.14. Before defaults to GID 0 ☹  
-   🌐 https://github.com/kubernetes/enhancements/issues/213
+Can also cause unpredictable errors: e.g. 
+* service `POSTGRES` -> env `POSTGRES_PORT` mounted into every port in Namespace.
+* Is picked up by e.g. [keycloak](https://github.com/keycloak/keycloak-containers/blob/master/server/README.md) container.
+  Even it not planned!
+  Another example - docker/registry?
+
+
+
+### Bonus: Disable access to K8s API
+
+```yaml
+  automountServiceAccountToken: false # When not communicating with API Server  
+```
+
+* SA Token in every pod for api-server authn 
+```bash
+curl --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt \
+  -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \
+  https://${KUBERNETES_SERVICE_HOST}/api/v1/
+```
+* If not needed, disable!
+* No authentication possible
+* 🔥 Lesser risk of security misconfig or vulns in authz  
+  <!-- These blanks disable the horizontal scroll bar in the listing above :-( -->
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
 

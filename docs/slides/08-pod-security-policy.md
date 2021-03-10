@@ -10,6 +10,10 @@
 > PSPs will be deprecated in 1.21 with removal targeted for 1.25.  
  <i class='fab fa-github'></i> https://github.com/kubernetes/enhancements/issues/5
 
+Note: 
+k8s 1.21 2021-08-04
+https://www.kubernetes.dev/resources/release/
+
 
 
 ## PSP Deprecated - what now?
