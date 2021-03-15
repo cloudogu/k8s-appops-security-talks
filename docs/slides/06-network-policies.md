@@ -61,6 +61,7 @@ Don't forget to:
 * Allow external ingress to ingress controller  
 * Allow access to DNS from every namespace   
 * Allow DNS egress to the outside (if needed)  
+* Allow monitoring tools (e.g. Prometheus)
 * Allow operators egress (Backup, LetsEncrypt, external-dns, Monitoring, Logging, GitOps-Repo, Helm Repos, etc.)
 
 Note:
@@ -75,7 +76,6 @@ Note:
 
 ## 🚧️ Net pol pitfalls
 
-* Allow monitoring tools (e.g. Prometheus)
 * Restart might be necessary (e.g. Prometheus)
 * No labels on namespaces by default
 * Allowing egress to API server difficult  
