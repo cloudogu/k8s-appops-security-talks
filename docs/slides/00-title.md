@@ -24,7 +24,7 @@ Johannes Schnatterer
 </div>
 
 <p class="state-background" style="font-size: 0.9em">
-    <a href="Secure-by-Default-Pragmatically-Improve-App-Security-Using-K8s-Built-Ins.pdf">
+    <a href="Good-Practices-for-Secure-Kubernetes-AppOps.pdf">
        <i class="far fa-file-pdf"></i>
     </a>
 </p>
